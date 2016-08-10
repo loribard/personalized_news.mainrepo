@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <h1>{{ movie.title }}</h1>
+    <p>Released: {{ movie.released_at }}</p>
+    <p>IMDB: <a href="{{ movie.imdb_url }}">{{ movie.imdb_url }}</a></p>
+
+  {% if movie.ratings %}
+      <h2>Ratings</h2>
+      <ul>
+        {% for rating in movie.ratings %}
+            <li>
+                <a href="/users/{{ rating.user_id }}">{{ rating.user_id }}</a>
+                rated {{ rating.score }}</li>
+        {% endfor %}
+      </ul>
+  {% endif %}
+
+  {% if "user_id" in session %}
+    <h2>Your Rating</h2>
+    {% if user_rating %}
+        <p>You currently rate this a {{ user_rating.score }}</p>
+    {% endif %}
+      <form action="/movies/{{ movie.movie_id }}" method="POST">
+          <label>Rating:
+              <input type="number" name="score">
+          </label>
+          <input type="submit" value="Rate">
+      </form>
+  {% endif %}
+
+{% endblock %}

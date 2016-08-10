@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Register</h1>
+
+<form action="/register" method="POST">
+
+    <div>
+        <label>
+            First Name
+            <input type="firstname" name="firstname">
+        </label>
+    </div>
+
+    <div>
+        <label>
+            Last Name
+            <input type="lastname" name="lastname">
+        </label>
+    </div>
+
+    <div>
+        <label>
+            Email
+            <input type="email" name="email">
+        </label>
+    </div>
+
+    <div>
+        <label>
+            Password
+            <input type="password" name="password">
+        </label>
+    </div>
+<h2> Topics I'm interested in (the sky is the limit): <h2>
+    <div>
+        <label>
+        1.
+            
+            <input type="text" name="interest1">
+        </label>
+    </div>
+
+    <div>
+        <label>
+            2.
+            <input type="text" name="interest2">
+        </label>
+    </div>
+
+    <div>
+        <label>
+            3.
+            <input type="text" name="interest3">
+        </label>
+    </div>
+
+       <div>
+        <label>
+            4.
+            <input type="text" name="interest4">
+        </label>
+    </div>
+
+
+    <div>
+        <input type="submit" value="Register">
+    </div>
+
+</form>
+
+{% endblock %}
