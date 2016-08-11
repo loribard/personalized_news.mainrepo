@@ -32,23 +32,23 @@ class User(db.Model):
                                                self.email,self.password)
 
 
-# class Movie(db.Model):
-#     """Movie on ratings website."""
+class Subreddit(db.Model):
+    """Movie on ratings website."""
 
-#     __tablename__ = "movies"
+    __tablename__ = "subreddits"
 
-#     movie_id = db.Column(db.Integer,
-#                          autoincrement=True,
-#                          primary_key=True)
-#     title = db.Column(db.String(100))
-#     released_at = db.Column(db.DateTime)
-#     imdb_url = db.Column(db.String(200))
+    subr_num = db.Column(db.Integer,
+                         autoincrement=False,
+                         primary_key=True)
+    category = db.Column(db.String(30))
+    title= db.Column(db.String(100))
+    url = db.Column(db.String(200))
 
-#     def __repr__(self):
-#         """Provide helpful representation when printed."""
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+        return "<Subreddit category=%s  title=%s  url=%s>"% (self.category,self.title, self.url)
 
-#         return "<Movie movie_id=%s title=%s>" % (self.movie_id,
-#                                                  self.title)
+        
 
 
 # class Rating(db.Model):
@@ -100,5 +100,6 @@ if __name__ == "__main__":
     # directly.
 
     from reddit_example_server import app
+    from reddit_example_server import r
     connect_to_db(app)
     print "Connected to DB."
