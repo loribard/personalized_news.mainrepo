@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, flash, redirect, session
 
 
 
-CLIENT_ID = "c2YVgHTmKv3aAw"
+CLIENT_ID =  os.environ['CLIENT_ID']
 CLIENT_SECRET = os.environ['CLIENT_SECRET']
 REDIRECT_URI = 'http://127.0.0.1:65010/authorize_callback'
 

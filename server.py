@@ -29,11 +29,18 @@ def homepage():
 def get_authorized():
     """actually get into the api after getting the callback information"""
 
-    actual_link = authorized()  
-    subreddit_dict = get_subreddits_by_interest('funny') 
 
+    actual_link = authorized() 
     return render_template("base.html")
 
+
+@app.route('/see-news')
+def get_news_page():
+    """display the news according to the users interests"""
+
+
+    subreddit_dict = get_subreddits_by_interest('funny') 
+    return render_template("thenews.html")
 
 
 @app.route("/login")

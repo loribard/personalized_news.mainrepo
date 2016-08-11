@@ -41,8 +41,8 @@ class Subreddit(db.Model):
 
     __tablename__ = "subreddits"
 
-    sub = get_subreddits_by_interest('funny')
-    load_subreddits(sub)
+    # sub = get_subreddits_by_interest('funny')
+    #load_subreddits(sub)
 
     subr_num = db.Column(db.Integer,
                          autoincrement=False,

@@ -18,6 +18,7 @@ def print_titles(listing_dict):
     posts = listing_dict["data"]["children"]
     for post in posts:
         print post["data"]["title"]
+        print post["data"]
 
 def main():
     listing_str = fetch_listing(URL)
