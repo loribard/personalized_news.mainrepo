@@ -1,6 +1,10 @@
 """Models and database functions for Ratings project."""
 
 from flask_sqlalchemy import SQLAlchemy
+from reddit import get_subreddits_by_interest
+# from seed import load_subreddits, load_users
+# from reddit import r,get_subreddits_by_interest
+# from seed import load_subreddits
 
 # This is the connection to the PostgreSQL database; we're getting
 # this through the Flask-SQLAlchemy helper library. On this, we can
@@ -37,6 +41,9 @@ class Subreddit(db.Model):
 
     __tablename__ = "subreddits"
 
+    sub = get_subreddits_by_interest('funny')
+    load_subreddits(sub)
+
     subr_num = db.Column(db.Integer,
                          autoincrement=False,
                          primary_key=True)
@@ -49,38 +56,6 @@ class Subreddit(db.Model):
         return "<Subreddit category=%s  title=%s  url=%s>"% (self.category,self.title, self.url)
 
         
-
-
-# class Rating(db.Model):
-#     """Rating of a movie by a user."""
-
-#     __tablename__ = "ratings"
-
-#     rating_id = db.Column(db.Integer,
-#                           autoincrement=True,
-#                           primary_key=True)
-#     movie_id = db.Column(db.Integer,
-#                          db.ForeignKey('movies.movie_id'))
-#     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-#     score = db.Column(db.Integer)
-
-#     # Define relationship to user
-#     user = db.relationship("User",
-#                            backref=db.backref("ratings",
-#                                               order_by=rating_id))
-
-#     # Define relationship to movie
-#     movie = db.relationship("Movie",
-#                             backref=db.backref("ratings",
-#                                                order_by=rating_id))
-
-#     def __repr__(self):
-#         """Provide helpful representation when printed."""
-
-#         s = "<Rating rating_id=%s movie_id=%s user_id=%s score=%s>"
-#         return s % (self.rating_id, self.movie_id, self.user_id,
-#                     self.score)
-
 
 #####################################################################
 # Helper functions
@@ -99,7 +74,8 @@ if __name__ == "__main__":
     # leave you in a state of being able to work with the database
     # directly.
 
-    from reddit_example_server import app
-    from reddit_example_server import r
+    from server import app
+    from server import r
+
     connect_to_db(app)
     print "Connected to DB."

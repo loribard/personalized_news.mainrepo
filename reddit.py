@@ -20,7 +20,7 @@ def get_authorize_reddit_link():
 
 
 
-def authorized(authorize):
+def authorized():
 	"""getting the args to be able to access the information from the path /authorize_callback"""
 	state = request.args.get('state', '')
 	code = request.args.get('code', '')
@@ -29,8 +29,8 @@ def authorized(authorize):
 	    
 
 
-interest='funny'
-def get_subreddits_by_interest(authorized,interest):
+# interest='funny'
+def get_subreddits_by_interest(interest):
 
     subreddit = r.get_subreddit(interest).get_top(limit=5)
     
@@ -49,10 +49,11 @@ def get_subreddits_by_interest(authorized,interest):
     print subreddits
     subreddit_dict[interest] = subreddits
     print subreddit_dict
+    return subreddit_dict
 
 
 
 if __name__=="__main__":
 	authorize = get_authorize_reddit_link()
-	authorized = authorized(authorize)
-	get_subreddits_by_interest(authorized,interest)
+	hop_into_api = authorized()
+	get_subreddits_by_interest(interest)

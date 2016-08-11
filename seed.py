@@ -1,8 +1,8 @@
 from sqlalchemy import func
 import json
 
-from model import connect_to_db,db,User,Subreddit
-from reddit_example_server import app
+from model import  db, User, Subreddit, connect_to_db
+
 
 """Utility file to seed MyNews database"""
 
@@ -21,13 +21,11 @@ def load_users(users_dict):
         print "Name: ", name
         password = users_dict[key]["password"]
         print "Password: ", password
-    #     user=User(name=name,password=password)
+        user=User(name=name,password=password)
     
-    #     db.session.add(key)
-    # db.session.commit()
-file = open("subreddit_dict.txt")
-file = file.read()
-sub=json.loads(file)
+        db.session.add(key)
+    db.session.commit()
+
 
 
 def load_subreddits(sub):
@@ -44,6 +42,8 @@ def load_subreddits(sub):
         url = values[key]["url"]
         subr=Subreddit(subr_num=item,category=category,title=title,url=url)
         print item,category,title,url
+        db.session.add(key)
+    db.session.commit()
        
 
 
