@@ -1,12 +1,15 @@
 {% extends 'base.html' %}
 {% block content %}
+<form action="/see-news" id="see-my-news">
+  <h1>Welcome</h1>
+  <input type="submit" value="Take me to my news">
+</form>
 
-  <h1>Ratings</h1>
 
-  <h2>Movies</h2>
-  <p><a href="/movies">View all movies</a></p>
+<form action="/register_form" id="registration">
+    <input type="submit" value="register">
+</form>
 
-  <h2>Users</h2>
-  <p><a href="/users">View all users</a></p>
+  
 
 {% endblock %}

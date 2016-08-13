@@ -1,49 +1,46 @@
 from sqlalchemy import func
 import json
+from server import app
 
-from model import  db, User, Subreddit, connect_to_db
+from model import  db, connect_to_db, Category
 
 
 """Utility file to seed MyNews database"""
 
 
-users_dict = {"user1":
-            {"name":"lori","password":"hi there"}
-            }
+category_choice_list = ['AskReddit','funny','todayilearned','pics','science', 'worldnews', 'IAmA', 'announcements',
+                    'videos', 'gaming','blog', 'movies','Music','aww','news','gifs', 'explainlikeimfive','askscience','books','television', 
+                    'LifeProTips']
 
-def load_users(users_dict):
-    print "Users"
+def load_categories(category_list):   
 
-    for key in users_dict.keys():
-        print "Key ", key
-        print "Value", users_dict[key]
-        name = users_dict[key]["name"]
-        print "Name: ", name
-        password = users_dict[key]["password"]
-        print "Password: ", password
-        user=User(name=name,password=password)
-    
-        db.session.add(key)
+    """Seed the categories which the user will see news from"""
+    for category in category_list:
+        category = Category(category=category)
+        db.session.add(category)
     db.session.commit()
 
 
 
-def load_subreddits(sub):
-    """Load seed subreddit...first 5 articles under the "funny" subreddit. """
+
+
+
+# def load_subreddits(sub):
+#     """Load seed subreddit...first 5 articles under the "funny" subreddit. """
 
  
-    category = sub.keys()
-    category = category[0]
-    values = sub[category]
-    print values
-    for key,value in values.items():
-        item = key
-        title=values[key]["title"]
-        url = values[key]["url"]
-        subr=Subreddit(subr_num=item,category=category,title=title,url=url)
-        print item,category,title,url
-        db.session.add(key)
-    db.session.commit()
+#     category = sub.keys()
+#     category = category[0]
+#     values = sub[category]
+#     print values
+#     for key,value in values.items():
+#         item = key
+#         title=values[key]["title"]
+#         url = values[key]["url"]
+#         subr=Subreddit(subr_num=item,category=category,title=title,url=url)
+#         print item,category,title,url
+#         db.session.add(key)
+#     db.session.commit()
        
 
 
@@ -66,8 +63,9 @@ if __name__ == "__main__":
     connect_to_db(app)
     db.create_all()
 
-    load_users(users_dict)
-    load_subreddits(sub)
+    # load_users(users_dict)
+    load_categories(category_choice_list)
+    # load_subreddits()
     # load_ratings()
     # set_val_user_id()
 

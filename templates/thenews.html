@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+
+{{category}}
+
+
+{% for title, url in titles %}
+<li><a href="{{url}}">{{title}}</a></li>
+{% endfor %}
+
+
+  
+
+{% endblock %}

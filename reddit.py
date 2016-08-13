@@ -22,6 +22,8 @@ def get_authorize_reddit_link():
 
 def authorized():
 	"""getting the args to be able to access the information from the path /authorize_callback"""
+
+
 	state = request.args.get('state', '')
 	code = request.args.get('code', '')
 	info = r.get_access_information(code)
@@ -31,7 +33,7 @@ def authorized():
 
 # interest='funny'
 def get_subreddits_by_interest(interest):
-
+    interest='funny'
     subreddit = r.get_subreddit(interest).get_top(limit=5)
     
     print "TYPE", type(subreddit)
@@ -46,9 +48,8 @@ def get_subreddits_by_interest(interest):
         subreddits[i] = {"title":title,"url":url}
         i+=1
         
-    print subreddits
     subreddit_dict[interest] = subreddits
-    print subreddit_dict
+    print "Dictionary of "+interest+": " +str(subreddit_dict)
     return subreddit_dict
 
 

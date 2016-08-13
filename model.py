@@ -2,9 +2,7 @@
 
 from flask_sqlalchemy import SQLAlchemy
 from reddit import get_subreddits_by_interest
-# from seed import load_subreddits, load_users
-# from reddit import r,get_subreddits_by_interest
-# from seed import load_subreddits
+
 
 # This is the connection to the PostgreSQL database; we're getting
 # this through the Flask-SQLAlchemy helper library. On this, we can
@@ -25,35 +23,50 @@ class User(db.Model):
     user_id = db.Column(db.Integer,
                         autoincrement=True,
                         primary_key=True)
+    firstname = db.Column(db.String(64), nullable=True)
+    lastname = db.Column(db.String(64),nullable=True)
     email = db.Column(db.String(64), nullable=True)
     password = db.Column(db.String(64), nullable=True)
-   
+    interest = db.Column(db.Array(Integer))
 
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<User user_id=%s name=%s> password=%s" % (self.user_id,
-                                               self.email,self.password)
+        return "<User user_id=%s name=%s> lastname=%s" % (self.user_id,
+                                               self.email,self.lastname)
 
+class Category(db.Model):
+    """Categories which users can choose from"""
 
-class Subreddit(db.Model):
-    """Movie on ratings website."""
+    __tablename__="categories"
 
-    __tablename__ = "subreddits"
-
-    # sub = get_subreddits_by_interest('funny')
-    #load_subreddits(sub)
-
-    subr_num = db.Column(db.Integer,
-                         autoincrement=False,
-                         primary_key=True)
-    category = db.Column(db.String(30))
-    title= db.Column(db.String(100))
-    url = db.Column(db.String(200))
+    category_id = db.Column(db.Integer,
+                            autoincrement=True,
+                            primary_key=True)
+    category = db.Column(db.String(35), nullable=True)
 
     def __repr__(self):
-        """Provide helpful representation when printed."""
-        return "<Subreddit category=%s  title=%s  url=%s>"% (self.category,self.title, self.url)
+
+        return "<Category ID=%d Category=%s>" % (self.category_id,self.category)
+
+
+class Association_table(db.Model):
+    """A table to link users and their interests"""
+
+    __tablename__ = 'user_category_link'
+
+    association_id = db.Column(db.Integer,
+                     autoincrement=True,
+                     primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.category_id'))
+
+    def __repr__(self):
+
+        return "Association=%d User=%d Category=%d" %(self.association_id,self.user_id,self.category_id)
+
+
+
 
         
 
@@ -64,7 +77,7 @@ def connect_to_db(app):
     """Connect the database to our Flask app."""
 
     # Configure to use our PostgreSQL database
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///ratings'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///subreddits'
     db.app = app
     db.init_app(app)
 
@@ -79,3 +92,25 @@ if __name__ == "__main__":
 
     connect_to_db(app)
     print "Connected to DB."
+
+
+
+# class Subreddit(db.Model):
+#     """Movie on ratings website."""
+
+#     __tablename__ = "subreddits"
+
+#     # sub = get_subreddits_by_interest('funny')
+#     #load_subreddits(sub)
+
+#     subr_num = db.Column(db.Integer,
+#                          autoincrement=False,
+#                          primary_key=True)
+#     category = db.Column(db.String(30))
+#     title= db.Column(db.String(100))
+#     url = db.Column(db.String(200))
+
+#     def __repr__(self):
+#         """Provide helpful representation when printed."""
+#         return "<Subreddit category=%s  title=%s  url=%s>"% (self.category,self.title, self.url)
+
