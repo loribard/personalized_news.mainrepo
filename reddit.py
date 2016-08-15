@@ -33,7 +33,7 @@ def authorized():
 
 # interest='funny'
 def get_subreddits_by_interest(interest):
-    interest='funny'
+
     subreddit = r.get_subreddit(interest).get_top(limit=5)
     
     print "TYPE", type(subreddit)
@@ -48,9 +48,9 @@ def get_subreddits_by_interest(interest):
         subreddits[i] = {"title":title,"url":url}
         i+=1
         
-    subreddit_dict[interest] = subreddits
-    print "Dictionary of "+interest+": " +str(subreddit_dict)
-    return subreddit_dict
+    # subreddit_dict[interest] = subreddits
+    # print "Dictionary of "+interest+": " +str(subreddit_dict)
+    return subreddits
 
 
 

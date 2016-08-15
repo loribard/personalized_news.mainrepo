@@ -27,7 +27,7 @@ class User(db.Model):
     lastname = db.Column(db.String(64),nullable=True)
     email = db.Column(db.String(64), nullable=True)
     password = db.Column(db.String(64), nullable=True)
-    interest = db.Column(db.Array(Integer))
+    
 
     def __repr__(self):
         """Provide helpful representation when printed."""
@@ -50,7 +50,7 @@ class Category(db.Model):
         return "<Category ID=%d Category=%s>" % (self.category_id,self.category)
 
 
-class Association_table(db.Model):
+class Association(db.Model):
     """A table to link users and their interests"""
 
     __tablename__ = 'user_category_link'
@@ -78,6 +78,7 @@ def connect_to_db(app):
 
     # Configure to use our PostgreSQL database
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///subreddits'
+    app.config['SQLALCHEMY_ECHO'] = True
     db.app = app
     db.init_app(app)
 
@@ -91,6 +92,7 @@ if __name__ == "__main__":
     from server import r
 
     connect_to_db(app)
+    
     print "Connected to DB."
 
 

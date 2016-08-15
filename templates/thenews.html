@@ -2,15 +2,28 @@
 {% block content %}
 
 
+<!-- {{dictionary_to_unpack_in_html}} -->
 
-{{category}}
+<br>
 
+{% for category,category_info in dictionary_to_unpack_in_html.iteritems() %}
+    CATEGORY:
 
-{% for title, url in titles %}
-<li><a href="{{url}}">{{title}}</a></li>
+    {{category}}<br>
+    {% for title in category_info %}
+    <li><a href='{{title[1]}}'>{{title[0]}}</a></li>
+
+    {% endfor %}
+
+   
+
 {% endfor %}
+
+
+
 
 
   
 
 {% endblock %}
+

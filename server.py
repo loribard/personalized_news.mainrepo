@@ -2,8 +2,8 @@ from jinja2 import StrictUndefined
 
 from flask import Flask, render_template, request, flash, redirect, session
 from flask_debugtoolbar import DebugToolbarExtension
-
-from model import connect_to_db, db, User
+import json
+from model import connect_to_db, db, User, Category, Association
 # import praw
 # import os
 from reddit import r,get_authorize_reddit_link, authorized, get_subreddits_by_interest
@@ -37,89 +37,138 @@ def get_authorized():
 @app.route('/see-news')
 def get_news_page():
     """display the news according to the users interests"""
-
-    category = 'funny'
-    subreddit_dict = get_subreddits_by_interest(category)
-    
-    titles=[]
-    
-    for interest,posts in subreddit_dict.iteritems():
-        for i, post in posts.iteritems():
-            title=post['title']
-            url=post['url']
+    category_list_by_userid = db.session.query(Association.category_id).filter_by(user_id=Association.user_id).all()
+    print "CATEGORY List", category_list_by_userid
+    category_list = []
+    for category in category_list_by_userid:
+        category_to_query_id = category[0]
+        category_to_query =db.session.query(Category.category).filter_by(category_id=category_to_query_id).first()
+        category_to_query=category_to_query[0]
+        category_list.append(category_to_query)
+    print category_list
+    dictionary_to_unpack_in_html = {}
+    for category in category_list:
+        subreddit_dict = get_subreddits_by_interest(category)
+        # print "Subreddit Dictionary: ", subreddit_dict
+        titles=[]
+        i = 0
+        for interest,posts in subreddit_dict.iteritems():
+           
+            # for i, post in posts.iteritems():
+            title=posts['title']
+            print '****************************************'
+            print "TITLE: ",title
+            url=posts['url']
+            print "URL: ", url
+            i+=1
             titles.append((title, url))
-
-
+        print '*********************************'
+        print "TITLES: ", titles
+        dictionary_to_unpack_in_html[category]=titles
+    print dictionary_to_unpack_in_html
     
-    return render_template("thenews.html",category=category,titles=titles)
+    return render_template("thenews.html",dictionary_to_unpack_in_html=dictionary_to_unpack_in_html)
 
 @app.route('/register_form')
 def get_form_to_fill_in():
     return render_template("register_form.html")
 
+
 @app.route('/register_form', methods=['POST'])
 def get_registration_info():
     """Process registration"""
 
-    firstname = request.form.get("firstname")
+
+    firstname = request.form["firstname"]
     lastname = request.form["lastname"]
     email = request.form["email"]
     password = request.form["password"]
     interests = request.form.getlist("interest")
-  
-    # instantiate_user()
-    # instantiate_association()
+
+    print firstname,lastname,email,password, str(interests)
+    flash("Welcome %s %s. Now please login to see your news." % (firstname,lastname))
+
+    instantiate_user(firstname,lastname,email,password)
+    user_id = db.session.query(User.user_id).filter_by(email=email).one()
+    user_id = user_id[0]
+    interest_list = []
+    for interest in interests:
+        interest_add_on = db.session.query(Category.category_id).filter_by(category=interest).one()
+        interest_list.append(interest_add_on[0])
+    print interest_list
+    
+    instantiate_association(user_id,interest_list)
+
+    return render_template("login.html")
 
     # flash("User %s %s added." % firstname,lastname)
-    return redirect("/")
+def instantiate_user(firstname,lastname,email,password):
+    """Instantiate a user as a member"""
 
-# def instantiate_user():
+
     new_user = User(firstname=firstname,
                lastname=lastname,
                email=email,
                password=password,
                )
-    db.add(new_user)
-    db.commit()
+    db.session.add(new_user)
+    db.session.commit()
+       
 
-# def instantiate_association():
-    for interest in interests:
-        association = Association_table(user_id=user_id,category_id=category_id)
-        db.add(association)
-        db.commit()
+def instantiate_association(user_id,interest_list):
+    """"Make an association table for the member and their interests."""
+
+
+    for interest in interest_list:
+        association = Association(user_id=user_id,category_id=interest)
+        db.session.add(association)
+    db.session.commit()
 
 
 
 @app.route("/login")
 def login():
+
     return render_template("login_form.html")
-# @app.route('/register', methods=['POST'])
-# def register_process():
-#     """Process registration."""
 
-#     # Get form variables
-#     email = request.form["email"]
-#     password = request.form["password"]
-#     age = int(request.form["age"])
-#     zipcode = request.form["zipcode"]
 
-#     new_user = User(email=email, password=password, age=age, zipcode=zipcode)
+@app.route('/login',methods=['POST'])
+def login_process():
+    """ Process login."""
+    email = request.form['email']
+    password = request.form['password']
 
-#     db.session.add(new_user)
-#     db.session.commit()
+    user = User.query.filter_by(email=email).first()
 
-#     flash("User %s added." % email)
-#     return redirect("/")
+    if not user:
+        flash ("no such user")
+        return redirect('/login')
+
+    if user.password != password:
+        flash('Incorrect Password')
+        return redirect('/login')
+
+    session['user_id'] = user.user_id
+
+    flash('Logged in')
+    return render_template('homepage.html')
+
+@app.route('/logout')
+def logout():
+    """Log out."""
+
+    del session['user_id']
+    flash('logged out')
+    return redirect('/')
+
 
 if __name__ == '__main__':
-    # app.debug = True
+    app.debug = True
 
-    # connect_to_db(app)
+    connect_to_db(app)
 
     # # Use the DebugToolbar
-    # DebugToolbarExtension(app)
-    # r = praw.Reddit('Test of Reddit API ')
-    # r.set_oauth_app_info(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI)
+    DebugToolbarExtension(app)
     
     app.run(debug=True, host="0.0.0.0", port=65010)
 
