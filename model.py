@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from reddit import get_subreddits_by_interest
 
 
+
 # This is the connection to the PostgreSQL database; we're getting
 # this through the Flask-SQLAlchemy helper library. On this, we can
 # find the `session` object, where we do most of our interactions
@@ -16,7 +17,8 @@ db = SQLAlchemy()
 # Model definitions
 
 class User(db.Model):
-    """User of ratings website."""
+    """User of MyNews website."""
+
 
     __tablename__ = "users"
 
@@ -28,9 +30,10 @@ class User(db.Model):
     email = db.Column(db.String(64), nullable=True)
     password = db.Column(db.String(64), nullable=True)
     
+    categories = db.relationship("Category",secondary="users-categories",backref="users")
 
     def __repr__(self):
-        """Provide helpful representation when printed."""
+        """Provide helpful representation on a user when printed."""
 
         return "<User user_id=%s name=%s> lastname=%s" % (self.user_id,
                                                self.email,self.lastname)
@@ -45,25 +48,30 @@ class Category(db.Model):
                             primary_key=True)
     category = db.Column(db.String(35), nullable=True)
 
+
     def __repr__(self):
+        """Show category and associated id """
 
         return "<Category ID=%d Category=%s>" % (self.category_id,self.category)
 
 
-class Association(db.Model):
+class UserCategory(db.Model):
     """A table to link users and their interests"""
 
-    __tablename__ = 'user_category_link'
 
-    association_id = db.Column(db.Integer,
+    __tablename__ = 'users-categories'
+
+    user_category_id = db.Column(db.Integer,
                      autoincrement=True,
                      primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     category_id = db.Column(db.Integer, db.ForeignKey('categories.category_id'))
+    
 
     def __repr__(self):
+        """Table to associate user_id and category_id's...each have their own association id"""
 
-        return "Association=%d User=%d Category=%d" %(self.association_id,self.user_id,self.category_id)
+        return "UserCategory=%d User=%d Category=%d" %(self.user_category_id,self.user_id,self.category_id)
 
 
 

@@ -33,18 +33,20 @@ def authorized():
 
 # interest='funny'
 def get_subreddits_by_interest(interest):
+    """This returns the top five (limit) reddits for the interest chosen"""
+    
 
     subreddit = r.get_subreddit(interest).get_top(limit=5)
     
-    print "TYPE", type(subreddit)
+    # print "TYPE", type(subreddit)
     i = 0
     subreddit_dict = {}
     subreddits = {}
-    for thing in subreddit:
-        print thing.title
-        print thing.url
-        title = thing.title
-        url = thing.url
+    for item_of_interest in subreddit:
+        # print item_of_interest.title
+        # print item_of_interest.url
+        title = item_of_interest.title
+        url = item_of_interest.url
         subreddits[i] = {"title":title,"url":url}
         i+=1
         
