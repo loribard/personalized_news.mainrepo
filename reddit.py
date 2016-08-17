@@ -16,7 +16,7 @@ def get_authorize_reddit_link():
 
 
 	return r.get_authorize_url('DifferentUniqueKey',['identity', 'read', 'submit', 'history', 'report'],
-                                       refreshable=True)
+									   refreshable=True)
 
 
 
@@ -26,33 +26,35 @@ def authorized():
 
 	state = request.args.get('state', '')
 	code = request.args.get('code', '')
+	# print code
+	# code = 'bPIZoepShvTONoIoSAPPawOsmuI'
 	info = r.get_access_information(code)
 	return r.get_me() 
-	    
+		
 
 
 # interest='funny'
 def get_subreddits_by_interest(interest):
-    """This returns the top five (limit) reddits for the interest chosen"""
-    
+	"""This returns the top five (limit) reddits for the interest chosen"""
 
-    subreddit = r.get_subreddit(interest).get_top(limit=5)
-    
-    # print "TYPE", type(subreddit)
-    i = 0
-    subreddit_dict = {}
-    subreddits = {}
-    for item_of_interest in subreddit:
-        # print item_of_interest.title
-        # print item_of_interest.url
-        title = item_of_interest.title
-        url = item_of_interest.url
-        subreddits[i] = {"title":title,"url":url}
-        i+=1
-        
-    # subreddit_dict[interest] = subreddits
-    # print "Dictionary of "+interest+": " +str(subreddit_dict)
-    return subreddits
+
+	subreddit = r.get_subreddit(interest).get_top(limit=5)
+	
+	# print "TYPE", type(subreddit)
+	i = 0
+	subreddit_dict = {}
+	subreddits = {}
+	for item_of_interest in subreddit:
+		# print item_of_interest.title
+		# print item_of_interest.url
+		title = item_of_interest.title
+		url = item_of_interest.url
+		subreddits[i] = {"title":title,"url":url}
+		i+=1
+		
+	# subreddit_dict[interest] = subreddits
+	# print "Dictionary of "+interest+": " +str(subreddit_dict)
+	return subreddits
 
 
 

@@ -1,0 +1,37 @@
+   
+{% extends 'base.html' %}
+{% block content %}
+
+<form action="/change_interests" method="POST">  
+<h2> Please check the categories you're interested in today. : <h2>
+    <input type="checkbox" name="interest_change" value="AskReddit">AskReddit
+    <input type="checkbox" name="interest_change" value="funny">funny 
+    <input type="checkbox" name="interest_change" value="todayilearned">todayilearned
+    <input type="checkbox" name="interest_change" value="pics">pics
+    <input type="checkbox" name="interest_change" value="science">science
+    <input type="checkbox" name="interest_change" value="worldnews">worldnews
+    <input type="checkbox" name="interest_change" value="IAmA">IAmA
+    <input type="checkbox" name="interest_change" value="announcements">announcements
+    <input type="checkbox" name="interest_change" value="videos">videos
+    <input type="checkbox" name="interest_change" value="gaming">gaming
+    <input type="checkbox" name="interest_change" value="blog">blog
+    <input type="checkbox" name="interest_change" value="movies">movies
+    <input type="checkbox" name="interest_change" value="Music">Music
+    <input type="checkbox" name="interest_change" value="aww">aww
+    <input type="checkbox" name="interest_change" value="news">news
+    <input type="checkbox" name="interest_change" value="gifs">gifs
+    <input type="checkbox" name="interest_change" value="explainlikeimfive">explainlikeimfive
+    <input type="checkbox" name="interest_change" value="askscience">askscience
+    <input type="checkbox" name="interest_change" value="books">books
+    <input type="checkbox" name="interest_change" value="television">television
+    <input type="checkbox" name="interest_change" value="LifeProTips">LifeProTips
+    
+  
+
+    <div>
+        <input type="submit" value="Register">
+    </div>
+
+</form>
+
+{% endblock %}

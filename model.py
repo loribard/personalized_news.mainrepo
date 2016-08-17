@@ -30,7 +30,9 @@ class User(db.Model):
     email = db.Column(db.String(64), nullable=True)
     password = db.Column(db.String(64), nullable=True)
     
-    categories = db.relationship("Category",secondary="users-categories",backref="users")
+    categories = db.relationship("Category",
+                                  secondary="users_categories",
+                                  backref="users")
 
     def __repr__(self):
         """Provide helpful representation on a user when printed."""
@@ -59,7 +61,7 @@ class UserCategory(db.Model):
     """A table to link users and their interests"""
 
 
-    __tablename__ = 'users-categories'
+    __tablename__ = 'users_categories'
 
     user_category_id = db.Column(db.Integer,
                      autoincrement=True,
@@ -101,26 +103,5 @@ if __name__ == "__main__":
 
     connect_to_db(app)
     
-    print "Connected to DB."
-
-
-
-# class Subreddit(db.Model):
-#     """Movie on ratings website."""
-
-#     __tablename__ = "subreddits"
-
-#     # sub = get_subreddits_by_interest('funny')
-#     #load_subreddits(sub)
-
-#     subr_num = db.Column(db.Integer,
-#                          autoincrement=False,
-#                          primary_key=True)
-#     category = db.Column(db.String(30))
-#     title= db.Column(db.String(100))
-#     url = db.Column(db.String(200))
-
-#     def __repr__(self):
-#         """Provide helpful representation when printed."""
-#         return "<Subreddit category=%s  title=%s  url=%s>"% (self.category,self.title, self.url)
+    print "Connected to DB"
 
