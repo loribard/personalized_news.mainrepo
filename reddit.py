@@ -20,14 +20,9 @@ def get_authorize_reddit_link():
 
 
 
-def authorized():
+def authorized(state, code):
 	"""getting the args to be able to access the information from the path /authorize_callback"""
 
-
-	state = request.args.get('state', '')
-	code = request.args.get('code', '')
-	# print code
-	# code = 'bPIZoepShvTONoIoSAPPawOsmuI'
 	info = r.get_access_information(code)
 	return r.get_me() 
 		
@@ -36,7 +31,6 @@ def authorized():
 # interest='funny'
 def get_subreddits_by_interest(interest):
 	"""This returns the top five (limit) reddits for the interest chosen"""
-
 
 	subreddit = r.get_subreddit(interest).get_top(limit=5)
 	

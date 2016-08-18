@@ -2,26 +2,21 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<form action="/change_interests" method="POST">  
+<form action="/declare_interests" method="POST">  
 <h2> Please check the categories you're interested in today. : <h2>
-{% for category in category_names %}
+{% for category in cat_names %}
 
-    <label>
+    <label>{{category}}
         <input type="checkbox"
                name="interest_change"
                value="{{category}}"
-            {% if category in current_cats %}
+            {% if category in category_list %}
                checked="checked"
             {% endif %}
         >
-        {{category}}
+        
     </label>
 {% endfor %}
-
-
-    
-    
-  
 
     <div>
         <input type="submit" value="Register">

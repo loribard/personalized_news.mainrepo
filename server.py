@@ -1,11 +1,11 @@
-from jinja2 import StrictUndefined
+import json
 
+
+from jinja2 import StrictUndefined
 from flask import Flask, render_template, request, flash, redirect, session
 from flask_debugtoolbar import DebugToolbarExtension
-import json
-from model import connect_to_db, db, User, Category, UserCategory
-# import praw
-# import os
+
+from model import connect_to_db, db, User, Category, UserCategory, categories
 from reddit import r,get_authorize_reddit_link, authorized, get_subreddits_by_interest
 
 app = Flask(__name__)
@@ -20,17 +20,21 @@ app.jinja_env.undefined = StrictUndefined
 def homepage():
     """ home page, going to ask pass in secret key and code to reddit in order to get OAuth code to use in authorized"""
 
-
-    return "<a href='%s' >Click here </a>to start" % get_authorize_reddit_link()
-   
-
-
+    # if logged_in:
+    #    return render_template("homepage.html")
+    # else :
+    
+    reddit_auth_url = get_authorize_reddit_link()
+    return redirect(reddit_auth_url)
+    
 @app.route('/authorize_callback')
 def get_authorized():
     """actually get into the api after getting the callback information"""
 
 
-    actual_link = authorized() 
+    state = request.args.get('state', '')
+    code = request.args.get('code', '')
+    authorized(state, code)
     return render_template("homepage.html")
 
 
@@ -38,25 +42,20 @@ def get_authorized():
 def get_news_page():
     """display the news according to the users interests"""
 
-    
     user_id = session['user_id']
-    category_id_list = []
-    # get list of user's chosen categories
-    object_list_by_userid =UserCategory.query.filter_by(user_id=user_id).all()
-    for object in object_list_by_userid:
-        category = object.category_id
-        category_id_list.append(category)
-    category_list = []
-    for category in category_id_list:
-        #converting the category_id into the category name.
-        category_to_query =db.session.query(Category.category).filter_by(category_id=category).first()
-        #need to call the first element of every tuple at index 0.
-        category_to_query=category_to_query[0]
-        category_list.append(category_to_query)
-    # print category_list
+    queries_for_category = UserCategory.query.filter_by(user_id=user_id).all()
+    categories_to_query=[]
+    for query in queries_for_category:
+        category=category.query.get(query.category_id)
+        
+    print category_list
     dictionary_to_unpack_in_html = {}
     for category in category_list:
-        subreddit_dict = get_subreddits_by_interest(category)
+
+        subreddits = categories[category]
+        reddit_url = "+".join(subreddits)
+
+        subreddit_dict = get_subreddits_by_interest(reddit_url)
         # make an ordered list of titles and their associated url's
         titles=[]
         i = 0
@@ -65,6 +64,7 @@ def get_news_page():
             url=posts['url']
             i+=1
             titles.append((title, url))
+
         
         dictionary_to_unpack_in_html[category]=titles
     print dictionary_to_unpack_in_html
@@ -73,6 +73,8 @@ def get_news_page():
 
 @app.route('/register_form')
 def get_form_to_fill_in():
+
+
     return render_template("register_form.html")
 
 
@@ -85,73 +87,59 @@ def get_registration_info():
     lastname = request.form["lastname"]
     email = request.form["email"]
     password = request.form["password"]
-    interests = request.form.getlist("interest")
-
-    print firstname,lastname,email,password, str(interests)
-    flash("Welcome %s %s. Now please login to see your news." % (firstname,lastname))
+   
+    flash("Welcome %s %s. Please check the categories you're interested in." % (firstname,lastname))
 
     #instantiate a user in the User database.
-    instantiate_user(firstname,lastname,email,password)
-    #using the user_id (gotten when instantiating a user) use that user_id to input into the association database)
-    user_id = db.session.query(User.user_id).filter_by(email=email).first()
-    #get the userid
-    user_id = user_id[0]
-    interest_list = []
-    #look up teh category id on every category(interest) chosen to put in the association table
-    for interest in interests:
-        interest_add_on = db.session.query(Category.category_id).filter_by(category=interest).one()
-        interest_list.append(interest_add_on[0])
-    print interest_list
-    #add instances to the association table
-    instantiate_usercategory(user_id,interest_list)
-    flash("User %s %s added." % (firstname,lastname))
-
-    return render_template("login.html")
-
+    new_user = User.instantiate_user(firstname,lastname,email,password)
+    session['user_id'] = new_user.user_id 
     
-def instantiate_user(firstname,lastname,email,password):
-    """Instantiate a user as a member"""
+    return redirect('/declare_interests')
 
-
-    new_user = User(firstname=firstname,
-               lastname=lastname,
-               email=email,
-               password=password,
-               )
-    db.session.add(new_user)
-    db.session.commit()
-       
-
-def instantiate_usercategory(user_id,interest_list):
-    """"Make an association table for the member and their interests."""
-
-
-    for interest in interest_list:
-        association = UserCategory(user_id=user_id,category_id=interest)
-        db.session.add(association)
-    db.session.commit()
-
-
-@app.route("/change_interests")
-def get_form_change_interests():
+ 
+@app.route("/declare_interests")
+def user_interests_form():
     """take care of users who want to change what their interests are"""
 
-
-    return render_template("change_interests.html")
-
-
-@app.route("/change_interests" , methods=['POST'])
-def change_interests():
+    cat_names = categories.keys()
+    cat_names.sort()
     user_id = session['user_id']
-    db.session.query(UserCategory).filter_by(user_id=user_id).delete()
-    db.session.commit()
+    # user = UserCategory.query.filter_by(user_id=user_id).all()
+    #if user_id=1:[<User user_id=1 name=lori@bardfamily.org> lastname=bard]
+    # user = User.query.filter_by(user_id=user_id).first()
+    # is user_id=1:[UserCategory=1 User=1 Category=1, UserCategory=2 User=1 Category=2]
+    # users_categories = UserCategory.query.filter_by(user_id=user_id).all()
+    category_list = []
+    users_category_ids = db.session.query(UserCategory.category_id).filter_by(user_id=user_id).all()
+    #notes on above:db.session.query(UserCategory.category_id).filter_by(user_id=1).all()
+    #yields [(1,), (2,)]
+    if len(users_category_ids) > 0:
+    
+        for user_category_id in users_category_ids:
+            category = user_category_id[0]
+            user_category_name=Category.query.get(category_id)
+            category_list.append(user_category_name)
+    
+
+    return render_template("declare_interests.html",
+                           cat_names=cat_names,
+                           category_list=category_list
+                           )
+
+
+@app.route("/declare_interests" , methods=['POST'])
+def register_interests():
+    user_id = session['user_id']
+    if db.session.query(UserCategory):
+        db.session.query(UserCategory).filter_by(user_id=user_id).delete()
+        db.session.commit()
     interests = request.form.getlist("interest_change")
     interest_list = []
     #look up teh category id on every category(interest) chosen to put in the association table
     for interest in interests:
-        interest_add_on = db.session.query(Category.category_id).filter_by(category=interest).one()
+        interest_add_on = db.session.query(Category.category_id).filter_by(category_name=interest).first()
         interest_list.append(interest_add_on[0])
-    instantiate_usercategory(user_id,interest_list)
+    UserCategory.instantiate_usercategory(user_id,interest_list)
 
     return render_template("homepage.html")
 
@@ -181,7 +169,7 @@ def login_process():
     session['user_id'] = user.user_id
 
     flash('Logged in')
-    return render_template('homepage.html')
+    return redirect('/declare_interests')
 
 @app.route('/logout')
 def logout():

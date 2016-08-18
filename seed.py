@@ -1,26 +1,21 @@
-from sqlalchemy import func
 import json
-from server import app
 
-from model import  db, connect_to_db, Category, User, UserCategory
+from sqlalchemy import func
+
+from model import  db, connect_to_db, Category, User, UserCategory, categories
+from server import app
 
 
 """Utility file to seed MyNews database"""
 
-
-category_choice_list = ['AskReddit','funny','todayilearned','pics','science', 'worldnews', 'IAmA', 'announcements',
-                    'videos', 'gaming','blog', 'movies','Music','aww','news','gifs', 'explainlikeimfive','askscience','books','television', 
-                    'LifeProTips']
-
-def load_categories(category_list):
+def store_categories(categories_dict):
     """Seed the categories which the user will see news from"""
 
 
-    print "Categories"
-
-    for category in category_list:
-        category_to_load = Category(category=category)
-        db.session.add(category_to_load)
+    for category_name,subreddit_search_list in categories.iteritems():
+        subreddit_search = '+'.join(subreddit_search_list) 
+        new_category = Category(category_name=category_name, subreddit_search=subreddit_search)
+        db.session.add(new_category)
     db.session.commit()
 
 def set_val_user_id():
@@ -60,7 +55,7 @@ if __name__ == "__main__":
     connect_to_db(app)
     db.create_all()
 
-    load_categories(category_choice_list)
+    store_categories(categories)
     set_val_user_id()
     
    
