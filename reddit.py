@@ -34,22 +34,39 @@ def get_subreddits_by_interest(interest):
 
 	subreddit = r.get_subreddit(interest).get_top(limit=5)
 	
-	# print "TYPE", type(subreddit)
-	i = 0
-	subreddit_dict = {}
+	i=0
 	subreddits = {}
+
 	for item_of_interest in subreddit:
-		# print item_of_interest.title
-		# print item_of_interest.url
 		title = item_of_interest.title
+		# import pdb; pdb.set_trace()
 		url = item_of_interest.url
+		print item_of_interest.thumbnail,'###################################'
 		subreddits[i] = {"title":title,"url":url}
 		i+=1
+
+	
+
 		
-	# subreddit_dict[interest] = subreddits
-	# print "Dictionary of "+interest+": " +str(subreddit_dict)
+
+		
 	return subreddits
 
+
+
+	
+
+	# def find_key(d, keys):
+ #                for k in keys:
+ #                    d = d.get(v, {})
+ #                if d:
+ #                    return d
+
+ #            image_url = find_key(post, ["preview", "images", "0", "source", "url"])
+ #            if image_url:
+ #                ...
+	# subreddit_urls = {}
+	# for item_of_interest in subreddit:
 
 
 if __name__=="__main__":

@@ -43,19 +43,17 @@ def get_news_page():
     """display the news according to the users interests"""
 
     user_id = session['user_id']
-    queries_for_category = UserCategory.query.filter_by(user_id=user_id).all()
-    categories_to_query=[]
-    for query in queries_for_category:
-        category=category.query.get(query.category_id)
-        
-    print category_list
+    users_w_categories_obj = UserCategory.query.filter_by(user_id=user_id).all()
+    category_id_list = []
+    for user in users_w_categories_obj:
+        category_id_list.append(user.category_id)
     dictionary_to_unpack_in_html = {}
-    for category in category_list:
-
-        subreddits = categories[category]
-        reddit_url = "+".join(subreddits)
-
-        subreddit_dict = get_subreddits_by_interest(reddit_url)
+    subreddit_to_query=[]
+    for category_id in category_id_list:
+        subreddit_obj = Category.query.get(category_id)
+        category = subreddit_obj.category_name
+        subreddit_url = subreddit_obj.subreddit_search
+        subreddit_dict = get_subreddits_by_interest(subreddit_url)
         # make an ordered list of titles and their associated url's
         titles=[]
         i = 0
@@ -101,8 +99,8 @@ def get_registration_info():
 def user_interests_form():
     """take care of users who want to change what their interests are"""
 
-    cat_names = categories.keys()
-    cat_names.sort()
+    category_names = categories.keys()
+    category_names.sort()
     user_id = session['user_id']
     # user = UserCategory.query.filter_by(user_id=user_id).all()
     #if user_id=1:[<User user_id=1 name=lori@bardfamily.org> lastname=bard]
@@ -116,13 +114,13 @@ def user_interests_form():
     if len(users_category_ids) > 0:
     
         for user_category_id in users_category_ids:
-            category = user_category_id[0]
-            user_category_name=Category.query.get(category_id)
-            category_list.append(user_category_name)
+            category_id = user_category_id[0]
+            user_category_obj=Category.query.get(category_id)
+            category_list.append(user_category_obj.category_name)
     
 
     return render_template("declare_interests.html",
-                           cat_names=cat_names,
+                           category_names=category_names,
                            category_list=category_list
                            )
 

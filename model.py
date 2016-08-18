@@ -111,7 +111,7 @@ class UserCategory(db.Model):
         for interest in interest_list:
             association = UserCategory(user_id=user_id,category_id=interest)
             db.session.add(association)
-        db.session.commit() 
+        db.session.commit()
         return association   
 
 

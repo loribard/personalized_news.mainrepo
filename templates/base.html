@@ -12,6 +12,7 @@
 {% else %}
     <a href="/login">Login</a>
 {% endif %}
+<button onclick="goBack()">Go Back</button>
 
 <hr>
 
@@ -22,7 +23,11 @@
 {% block content %}
     Put your body here.
 {% endblock %}
-
+<script>
+function goBack() {
+        window.history.back();
+}
+</script>  
 </body>
 </html>
 

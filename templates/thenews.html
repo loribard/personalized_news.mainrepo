@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
 
+<button onclick="goBack()">Go Back</button>
+
+
+
+
 <br>
 
 {% for category,category_info in dictionary_to_unpack_in_html.iteritems() %}
@@ -13,7 +18,13 @@
     {% endfor %}
 
 {% endfor %}
-  
+<script>
+function goBack() {
+        window.history.back();
+}
+</script>  
 
 {% endblock %}
+
+
 
