@@ -36,22 +36,18 @@ def get_subreddits_by_interest(interest):
 	
 	i=0
 	subreddits = {}
+	
 
 	for item_of_interest in subreddit:
 		title = item_of_interest.title
 		# import pdb; pdb.set_trace()
 		url = item_of_interest.url
-		print item_of_interest.thumbnail,'###################################'
-		subreddits[i] = {"title":title,"url":url}
+		thumbnail = item_of_interest.thumbnail
+		subreddits[i] = {"title":title,"url":url,"thumbnail":thumbnail}
+
 		i+=1
 
-	
-
-		
-
-		
 	return subreddits
-
 
 
 	

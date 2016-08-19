@@ -13,7 +13,10 @@
 
     {{category}}<br>
     {% for title in category_info %}
+    
     <li><a href='{{title[1]}}'>{{title[0]}}</a></li>
+    <img src='{{title[2]}}'>
+   
 
     {% endfor %}
 

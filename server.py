@@ -60,12 +60,13 @@ def get_news_page():
         for item,posts in subreddit_dict.iteritems():
             title=posts['title']
             url=posts['url']
+            thumbnail=posts['thumbnail']
             i+=1
-            titles.append((title, url))
+            titles.append((title, url,thumbnail))
 
         
         dictionary_to_unpack_in_html[category]=titles
-    print dictionary_to_unpack_in_html
+    
     
     return render_template("thenews.html",dictionary_to_unpack_in_html=dictionary_to_unpack_in_html)
 
@@ -167,7 +168,7 @@ def login_process():
     session['user_id'] = user.user_id
 
     flash('Logged in')
-    return redirect('/declare_interests')
+    return render_template('homepage.html')
 
 @app.route('/logout')
 def logout():
