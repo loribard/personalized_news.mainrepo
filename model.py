@@ -115,17 +115,46 @@ class UserCategory(db.Model):
         return association   
 
 
+def make_test_data():
+    """populate a db with test data; used in testing"""
+
+    # make a couple users
+    lori = User(firstname='lori', lastname='bard', email='lori@bardfamily.org', password = "lori")
+    junior = User(firstname='junior', lastname='bard', email='ls@fmail.com', password = 'junior')
+    rusty = User(firstname='rusty', lastname='cat', email='rusty@bardfamiy.org', password='rusty')
+
+    # We need to add to the session or it won't ever be stored
+    db.session.add_all([lori, junior, rusty])
+
+    # make a couple movies
+    pets = Category(category_name='Pets', subreddit_search=["aww", "cats", "catgifs", "dogs", "pets", "doggifs", "animalsbeingderps"])
+    sports = Category(category_name='Sports', subreddit_search=["sports", "olympics", "pro sports", "college sports", "action sports"])
+    # We need to add to the session or it won't ever be stored
+    db.session.add_all([pets, sports])
+
+    db.session.flush()
+
+    # make a couple ratings
+    lori_pets = UserCategory(user_id=lori.user_id, category_id=pets.category_id)
+    rusty_pets = UserCategory(user_id=rusty.user_id, category_id=pets.category_id)
+    junior_pets = UserCategory(user_id=junior.user_id, category_id=pets.category_id)
+    junior_sports = UserCategory(user_id=junior.user_id, category_id=sports.category_id)
+
+    # We need to add to the session or it won't ever be stored
+    db.session.add_all([lori_pets,rusty_pets,junior_pets,junior_sports])
+
+    db.session.commit()
         
 
 #####################################################################
 # Helper functions
 
-def connect_to_db(app):
+def connect_to_db(app, db_uri='postgreesql:///subreddits'):
     """Connect the database to our Flask app."""
 
     # Configure to use our PostgreSQL database
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///subreddits'
-    app.config['SQLALCHEMY_ECHO'] = True
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
+    # app.config['SQLALCHEMY_ECHO'] = True
     db.app = app
     db.init_app(app)
 

@@ -33,23 +33,6 @@ def set_val_user_id():
         db.session.commit()
 
 
-# def load_subreddits(sub):
-#     """Load seed subreddit...first 5 articles under the "funny" subreddit. """
-
- 
-#     category = sub.keys()
-#     category = category[0]
-#     values = sub[category]
-#     print values
-#     for key,value in values.items():
-#         item = key
-#         title=values[key]["title"]
-#         url = values[key]["url"]
-#         subr=Subreddit(subr_num=item,category=category,title=title,url=url)
-#         print item,category,title,url
-#         db.session.add(key)
-#     db.session.commit()
-
 
 if __name__ == "__main__":
     connect_to_db(app)

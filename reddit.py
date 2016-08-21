@@ -1,6 +1,10 @@
+import json
+import requests
 import praw
 import os
 from flask import Flask, render_template, request, flash, redirect, session
+from pprint import pprint
+
 
 
 
@@ -30,29 +34,72 @@ def authorized(state, code):
 
 # interest='funny'
 def get_subreddits_by_interest(interest):
-	"""This returns the top five (limit) reddits for the interest chosen"""
-
-	subreddit = r.get_subreddit(interest).get_top(limit=5)
-	
-	i=0
-	subreddits = {}
-	
-
-	for item_of_interest in subreddit:
-		title = item_of_interest.title
-		# import pdb; pdb.set_trace()
-		url = item_of_interest.url
-		thumbnail = item_of_interest.thumbnail
-		subreddits[i] = {"title":title,"url":url,"thumbnail":thumbnail}
-
-		i+=1
-
-	return subreddits
+    """This returns the top five (limit) reddits for the interest chosen"""
 
 
-	
+    subreddit = r.get_subreddit(interest).get_top(limit=5)
 
-	# def find_key(d, keys):
+    
+    subreddits = {}
+    
+    i=0
+    
+    for item_of_interest in subreddit:
+        title = item_of_interest.title
+        url = item_of_interest.url
+
+        # data_to_look_at = str(url)+ '/.json'
+        # data=data_to_look_at.json()
+        # print data
+        # json.dumps(data_to_look_at)
+        # f=open('data_to_look_at.json','w')
+        # f.write(json.dumps(data_to_look_at))
+        # f.close
+        # f=open('data_to_look_at.json')
+        # data=f.read()
+        # result=json.loads(data)
+        # print '###################'
+        # print result
+        # print '********************'
+
+        # import pdb; pdb.set_trace()
+        thumbnail = item_of_interest.thumbnail
+        more=item_of_interest.replace_more_comments
+
+        
+        subreddits[i] = {"title":title,"url":url,"thumbnail":thumbnail}
+        i+=1
+        
+       
+        
+   
+    return subreddits
+
+    def look_at_data(json_file):
+        r = requests.get(json_file)
+        data = r.json()
+        keys = data.keys()
+        print keys
+        return
+
+
+
+
+ 		# subreddits_dig_deeper = {}
+ 		# import pdb; pdb.set_trace()
+ 		 # more_info = item_of_interest.replace_more_comments(limit=None,threshold=0)
+ 		 # subreddits_dig_deeper[i] = more_info
+
+ 	
+
+ 	
+
+ 
+ 	
+ 	# for item in data['data']['children']:
+ 	# 	print '*********************'
+ 	# 	print item['data']['preview']['images'][0]['source']['url']
+
  #                for k in keys:
  #                    d = d.get(v, {})
  #                if d:
