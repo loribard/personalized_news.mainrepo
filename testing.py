@@ -5,31 +5,32 @@ from model import db, connect_to_db, make_test_data, User, Category, UserCategor
 from server import app
 from db_func import get_category
 
-# class DatabaseTests(TestCase):
-#     """database tests """
+class DatabaseTests(TestCase):
+    """database tests """
 
-#     def setUp(self):
-#         """before every test"""
-#         self.client = app.test_client()
-#         app.config['TESTING'] = True
-#         connect_to_db(app, 'postgresql:///subreddittest')
-#         db.create_all()
-#         make_test_data()
+    def setUp(self):
+        # self.client = app.test_client()
+        # app.config['TESTING'] = True
+        connect_to_db(app, db_uri = "postgresql:///testsubreddits")
+        db.create_all()
+        make_test_data()
 
-#     def tearDown(self):
-#         """after every test"""
+    def tearDown(self):
+        """after every test"""
 
-#         db.session.close()
-#         db.drop_all()
+        db.session.close()
+        db.drop_all()
 
-#     def test_get_rating_for_user(self):
-#         """get the category from category_id 1, user_id 1"""
+    def test_get_rating_for_user(self):
+        """get the category names for user_id 1"""
 
-#         user_category_id = 1
+        user_category_id = 1
         
 
-#         category = get_category(user_category_id)
-#         self.assertEqual(category.category_name, 'Pets')
+        category = get_category(user_category_id)
+        self.assertEqual(Category.query.get(category).category_name, 'Pets')
+
+       
 
 
 
@@ -37,9 +38,9 @@ class FlaskDatabaseTests(TestCase):
 
     def setUp(self):
         """before every test"""
-        client = app.test_client()
+        self.client = app.test_client()
         app.config['TESTING'] = True
-        connect_to_db(app, 'postgresql:///subreddittest')
+        connect_to_db(app, db_uri = 'postgresql:///testsubreddits')
         db.create_all()
         make_test_data()
 
@@ -58,16 +59,31 @@ class FlaskDatabaseTests(TestCase):
                             'firstname': 'melissa',
                             'lastname': 'bard',
                             'email': email,
-                            'password': 'melissa',
+                            'password': 'melissa'
                           }
 
-        result = self.client.post("'/register_form'",
+        result = self.client.post('/register_form',
                               data=registration_data,
+                              follow_redirects=True
                               )
 
         self.assertEqual(result.status_code, 200)
-        self.assertIn(email, result.data)
+        
 
+class MyAppIntegrationTestCase(TestCase):
+    def test_index(self):
+        client = app.test_client()
+        app.config['TESTING'] = True
+        result = client.get('/login')
+        self.assertIn('<h1>Login</h1>',result.data)
+
+    def test_registration_form(self):
+        client = app.test_client()
+        app.config['TESTING'] = True
+        result = client.get('/register_form')
+        self.assertIn('<h1>Register</h1>', result.data)
+
+   
 
 if __name__ == "__main__":
     import unittest

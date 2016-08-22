@@ -38,26 +38,24 @@ def get_news():
 
     return dictionary_to_unpack_in_html
 
-    def get_declared_interests_form():
-        """ get a list of the interests the user has. If the user has interests registered, they appear checked
-        
-        response = user_id = 1
 
+def get_declared_interests():
+    """ get a list of the interests the user has. If the user has interests registered, they appear checked
         """
 
-        user_id = session['user_id']
-        category_list = []
-        users_category_ids = db.session.query(UserCategory.category_id).filter_by(user_id=user_id).all()
+    user_id = session['user_id']
+    category_list = []
+    users_category_ids = db.session.query(UserCategory.category_id).filter_by(user_id=user_id).all()
    
-        if len(users_category_ids) > 0:
+    if len(users_category_ids) > 0:
     
-            for user_category_id in users_category_ids:
-                category_id = user_category_id[0]
-                user_category_obj=Category.query.get(category_id)
-                category_list.append(user_category_obj.category_name)
+        for user_category_id in users_category_ids:
+            category_id = user_category_id[0]
+            user_category_obj=Category.query.get(category_id)
+            category_list.append(user_category_obj.category_name)
              
 
-        return category_list
+    return category_list
 
 
 

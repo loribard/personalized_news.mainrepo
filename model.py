@@ -117,7 +117,7 @@ class UserCategory(db.Model):
 
 def make_test_data():
     """populate a db with test data; used in testing"""
-
+    
     # make a couple users
     lori = User(firstname='lori', lastname='bard', email='lori@bardfamily.org', password = "lori")
     junior = User(firstname='junior', lastname='bard', email='ls@fmail.com', password = 'junior')
@@ -149,12 +149,12 @@ def make_test_data():
 #####################################################################
 # Helper functions
 
-def connect_to_db(app, db_uri='postgreesql:///subreddits'):
+def connect_to_db(app, db_uri='postgresql:///subreddits'):
     """Connect the database to our Flask app."""
 
     # Configure to use our PostgreSQL database
     app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
-    # app.config['SQLALCHEMY_ECHO'] = True
+    app.config['SQLALCHEMY_ECHO'] = True
     db.app = app
     db.init_app(app)
 
