@@ -26,7 +26,7 @@ def get_authorize_reddit_link():
 
 
 # interest='funny'
-def get_subreddits_by_interest(interest):
+def get_posts_by_interest(interest):
     """This returns the top five (limit) reddits for the interest chosen"""
 
 
@@ -36,25 +36,22 @@ def get_subreddits_by_interest(interest):
     # data=r.json()
 
     
-    subreddits = {}
-    
-    i=0
-    
-    for item_of_interest in subreddit:
-        title = item_of_interest.title
-        url = item_of_interest.url
-        thumbnail = item_of_interest.thumbnail
+    posts = []
         
-        preview = item_of_interest.preview['images'][0]['source']['url']
+    for praw_post in subreddit:
+        post = {"title": praw_post.title,
+                "url": praw_post.url,
+                "thumbnail": praw_post.thumbnail}
 
+        if hasattr(praw_post, "preview"):
+            preview_image = praw_post.preview['images'][0]['source']['url']
+        else:
+            preview_image = None
         
-        subreddits[i] = {"title":title,"url":url,"thumbnail":thumbnail,"preview":preview}
-        i+=1
-        
-       
-        
-   
-    return subreddits
+        post["preview_image"] = preview_image
+        posts.append(post)
+
+    return posts
 
     def look_at_data(json_file):
         r = requests.get(json_file)

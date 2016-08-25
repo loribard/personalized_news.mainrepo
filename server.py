@@ -7,7 +7,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 import praw
 
 from model import connect_to_db, db, User, Category, UserCategory, categories
-from reddit import r,get_authorize_reddit_link, get_subreddits_by_interest
+from reddit import r,get_authorize_reddit_link
 from main_program import get_news, get_declared_interests, get_news_quote, personalize_name
 
 app = Flask(__name__)

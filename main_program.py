@@ -3,7 +3,7 @@ import random
 from flask import session
 
 from model import connect_to_db, db, User, Category, UserCategory
-from reddit import get_subreddits_by_interest
+from reddit import get_posts_by_interest
 
 NEWS_QUOTES= ['We relish news of our heroes, forgetting that we are extraordinary to somebody too.', 'In the business world, bad news is usually good news---for somebody else.',"If it's bad news, we just have to get on and deal with it.", "Evening news is where they begin with 'Good Evening' and then proceed to tell you why it isn\'t.", 'News is to the mind what sugar is to the body.', 'Bad news travels fast. Good news takes the scenic route.', 'BREAKING NEWS: You\'re awesome and designed for success; live this day accordingly!', 'The bad news is time flies. The good news is you\'re the pilot.']
 
@@ -24,19 +24,8 @@ def get_news():
         subreddit_obj = Category.query.get(category_id)
         category = subreddit_obj.category_name
         subreddit_url = subreddit_obj.subreddit_search
-        subreddit_dict = get_subreddits_by_interest(subreddit_url)
-            # make an ordered list of titles and their associated url's
-        titles=[]
-        i = 0
-        for item,posts in subreddit_dict.iteritems():
-            title=posts['title']
-            url=posts['url']
-            thumbnail=posts['thumbnail']
-            preview=posts['preview']
-            i+=1
-            titles.append((title, url,thumbnail,preview))
-            
-        dictionary_to_unpack_in_html[category]=titles
+        posts = get_posts_by_interest(subreddit_url)
+        dictionary_to_unpack_in_html[category]=posts
 
 
     return dictionary_to_unpack_in_html
