@@ -5,30 +5,113 @@
 </head>
 <body>
 
-<h2> My News </h2>
-
-{% if "user_id" in session %}
-    <a href="/logout">Logout</a>
+{% if "user_name" in session %}
+ 
+  <h2> {{ session['user_name'] }} News</h2>
 {% else %}
-    <a href="/login">Login</a>
-{% endif %}
-<button onclick="goBack()">Go Back</button>
+  <h2> My News </h2>
+{% endif %} 
+
+    <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.4/cyborg/bootstrap.min.css"
+      rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Frijole' rel='stylesheet' type='text/css'>
+    <link rel='stylesheet' href='/static/ajax-exercise.css'>
+    <script src = "http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <style>
+        h1, h2, h3, .navbar-brand { font-family: "Anton"; margin: 10px; }
+
+   
+
+        html, body {
+          width: 100%;
+          height: 100%;
+          margin: 50;
+          background-color: #00ff99;
+        }
+
+        #saying  {
+          text-align: center;
+          margin-top: 2cm;
+
+        }
+
+        #extending {
+                      margin: 0px;
+                      padding: 0px;
+                      background-color: #33ccff
+                      ;
+                      width: 100%;
+                      height: 100%;
+                   }
+
+        .spaced {
+          margin-left:20px; 
+          margin-top: 20px;
+        }
+        </style>
+
+</head>
+<body>
+<nav class="navbar navbar-inverse" style="margin-bottom: 0px">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">
+                <span class="news"></span>
+                My News
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse"
+             id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="/register_form">Register</a></li>
+                <li><a href='/see-news'>View My News</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              {% if "user_id" in session %}
+                  <li><a href="/declare_interests">Profile</a></li>
+                  <li><a href="/logout">Logout</a></li>
+              {% else %}
+                  <li><a href="/register_form">Register</a></li>
+                  <li><a href="/login">Login</a></li>
+              {% endif %}
+
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+</nav>
+
+
+
+
+<div id="extending">
+    {% for flash in get_flashed_messages() %}
+      <div class="alert alert-danger" style="width:90%; margin:0 auto; background-color:#99ff33; color:black;">{{ flash }}</div>
+    {% endfor %}
 
 <hr>
-
-{% for flash in get_flashed_messages() %}
-  {{ flash }}
-{% endfor %}
-
-{% block content %}
-    Put your body here.
-{% endblock %}
-<script>
-function goBack() {
-        window.history.back();
-}
-</script>  
-</body>
+<script src="/static/ajax-exercise.js"></script>
 </html>
 
+{% block content %}
+{% endblock %}
 
+<!-- <div class="container">
+
+  <p>
+    <button id="get-news-quote-button" class="btn btn-primary">Get News Quote</button>
+  </p>
+
+  <div id="news-quote-text"></div> -->

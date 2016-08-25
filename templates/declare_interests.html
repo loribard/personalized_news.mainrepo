@@ -2,7 +2,9 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<form action="/declare_interests" method="POST">  
+<form action="/declare_interests" method="POST"> 
+{% if "user_id" in session %}
+ 
 <h2> Please check the categories you're interested in today: <h2>
 {% for category in category_names %}
 
@@ -16,12 +18,14 @@
         >
         
     </label>
+    <br>
 {% endfor %}
 
     <div>
         <input type="submit" value="Register">
     </div>
-
+{% endif %}
 </form>
 
 {% endblock %}
+   {{User.query.get(int('user_id')).firstname}}

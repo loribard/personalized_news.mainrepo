@@ -78,6 +78,9 @@ class Category(db.Model):
     subreddit_search = db.Column(db.String(300), nullable=True)
 
     def __repr__(self):
+       
+
+
         """Show category and associated id """
 
         return "<Category ID=%d Category=%s>" % (self.category_id,self.category_name)
