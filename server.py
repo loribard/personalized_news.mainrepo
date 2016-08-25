@@ -4,11 +4,11 @@ import json
 from jinja2 import StrictUndefined
 from flask import Flask, render_template, request, flash, redirect, session, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
+import praw
 
 from model import connect_to_db, db, User, Category, UserCategory, categories
-from reddit import r,get_authorize_reddit_link, authorized, get_subreddits_by_interest
+from reddit import r,get_authorize_reddit_link, get_subreddits_by_interest
 from main_program import get_news, get_declared_interests, get_news_quote, personalize_name
-
 
 app = Flask(__name__)
 app.secret_key = "ABC"
@@ -20,16 +20,17 @@ app.jinja_env.undefined = StrictUndefined
 def homepage():
     """ home page, going to ask pass in secret key and code to reddit in order to get OAuth code to use in authorized"""
 
-
+    # check if logged into Lori's News
     if session.get('user_id'):
-        print 'IN SESSION'
-
-        return render_template("homepage.html")
+        # check if logged into Reddit
+        try:
+            # get_me raises an exception if we're not logged in
+            user = r.get_me()
+            return render_template("homepage.html")
+        except praw.errors.OAuthScopeRequired:
+            url_for_api = get_authorize_reddit_link()
+            return redirect(url_for_api)
     else:
-        print "NOT IN SESSION, GETTING into API"
-        url_for_api = get_authorize_reddit_link()
-        # return redirect(reddit_auth_url)
-
         return render_template('homepage.html')
 
 
@@ -37,12 +38,11 @@ def homepage():
 def get_authorized():
     """actually get into the api after getting the callback information"""
 
-    print "IN GET_AUTHORIZED"
     state = request.args.get('state', '')
     code = request.args.get('code', '')
-    authorized(state, code)
+    info = r.get_access_information(code)
 
-    return render_template("homepage.html")
+    return redirect('/')
     
 
 @app.route('/news_quote')
@@ -147,7 +147,7 @@ def login_process():
     session['user_name'] = personalize_name(user.user_id)
     flash('Logged in')
    
-    return render_template('homepage.html')
+    return redirect('/')
     
 
 @app.route('/logout')
@@ -158,10 +158,11 @@ def logout():
     del session['user_name']
     flash('Logged out. Please log in to see your news')
     # return render_template('homepage.html',user_name="My")
-    return render_template('homepage.html')
+    return redirect('/')
 
 if __name__ == '__main__':
     app.debug = True
+    app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
     connect_to_db(app) 
     DebugToolbarExtension(app)
     app.run(debug=True, host="0.0.0.0", port=65010)

@@ -8,9 +8,12 @@ from pprint import pprint
 
 
 
-CLIENT_ID =  os.environ['CLIENT_ID']
-CLIENT_SECRET = os.environ['CLIENT_SECRET']
+CLIENT_ID =  os.environ.get('CLIENT_ID')
+CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
 REDIRECT_URI = 'http://127.0.0.1:65010/authorize_callback'
+
+if not (CLIENT_ID and CLIENT_SECRET):
+    raise Exception("I need a CLIENT_ID and CLIENT_SECRET")
 
 r = praw.Reddit('Test of Reddit API ')
 r.set_oauth_app_info(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI)
@@ -18,19 +21,8 @@ r.set_oauth_app_info(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI)
 
 def get_authorize_reddit_link():
     """getting reddit authorize link"""
-
-
-    return r.get_authorize_url('DifferentUniqueKey',['identity', 'read', 'submit', 'history', 'report'],
+    return r.get_authorize_url('uniqueKey',['identity', 'read'],
                                        refreshable=True)
-
-
-
-def authorized(state, code):
-    """getting the args to be able to access the information from the path /authorize_callback"""
-    
-    info = r.get_access_information(code)
-    return r.get_me() 
-        
 
 
 # interest='funny'
