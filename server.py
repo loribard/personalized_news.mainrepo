@@ -20,11 +20,10 @@ app.jinja_env.undefined = StrictUndefined
 def homepage():
     """ home page, going to ask pass in secret key and code to reddit in order to get OAuth code to use in authorized"""
 
-    # check if logged into Lori's News
+  
     if session.get('user_id'):
         # check if logged into Reddit
         try:
-            # get_me raises an exception if we're not logged in
             user = r.get_me()
             return render_template("homepage.html")
         except praw.errors.OAuthScopeRequired:
@@ -38,15 +37,16 @@ def homepage():
 def get_authorized():
     """actually get into the api after getting the callback information"""
 
+
     state = request.args.get('state', '')
     code = request.args.get('code', '')
     info = r.get_access_information(code)
-
     return redirect('/')
     
 
 @app.route('/news_quote')
 def print_news_quote():
+    """ Prints a random quote about the news"""
 
 
     return get_news_quote()
@@ -57,9 +57,12 @@ def get_news_page():
     """display the news according to the users interests"""
 
 
-    dictionary_to_unpack_in_html = get_news()
-   
-    return render_template("thenews.html",dictionary_to_unpack_in_html=dictionary_to_unpack_in_html)
+    if session.get('user_id'):
+        dictionary_to_unpack_in_html = get_news()
+        return render_template("thenews.html",dictionary_to_unpack_in_html=dictionary_to_unpack_in_html)
+    else:
+        flash("Please login if you're a member or register to become a member to see your news")
+        return redirect('/')
 
 
 @app.route('/register_form')
@@ -93,7 +96,8 @@ def user_interests_form():
 
     category_names = categories.keys()
     category_names.sort()
-    category_list = get_declared_interests()  
+    category_list = get_declared_interests() 
+
     return render_template("declare_interests.html",
                            category_names=category_names,
                            category_list=category_list,
@@ -103,6 +107,7 @@ def user_interests_form():
 @app.route("/declare_interests" , methods=['POST'])
 def register_interests():
     """"Get the user's interests and put them in the UserCategory Table"""
+
 
     user_id = session['user_id']
 
@@ -119,11 +124,13 @@ def register_interests():
 
     UserCategory.instantiate_usercategory(user_id,interest_list)
     
-    return render_template("homepage.html")
+    return redirect("/")
 
 
 @app.route("/login")
 def login():
+    """Log in Form"""
+
 
     return render_template("login.html")
 
@@ -131,9 +138,10 @@ def login():
 @app.route('/login',methods=['POST'])
 def login_process():
     """ Process login."""
+
+
     email = request.form.get('email')
     password = request.form.get('password')
-
     user = User.query.filter_by(email=email).first()
 
     if not user:
@@ -149,14 +157,27 @@ def login_process():
    
     return redirect('/')
 
-@app.route('/bbc')
-def show_bbc_hl():
-    bbc_dict = get_headlines('bbc-news')
-    headline_string = "BBC HEADLINE NEWS"
+
+@app.route('/news/<newssource>') 
+def show_bbc_hl(newssource):
+    """ to get the Headline news from BBC,CNN,API,Google or New York Times"""
+
+
+    bbc_dict = get_headlines(newssource)
+    if newssource == 'bbc-news':
+        headline_string = "BBC Headline News"
+    elif newssource == 'the-new-york-times':
+        headline_string = "The New York Times Headline News"
+    elif newssource == 'cnn':
+        headline_string = "CNN Headline News"
+    elif newssource == 'associated-press':
+        headline_string = 'Associated Press Headline News'
+    elif newssource =='google-news':
+        headline_string = "Google Headline News"
+   
     url = bbc_dict['url']
     title = bbc_dict['title']
     description = bbc_dict['description']
-
 
     return render_template("headlines.html",headline_string=headline_string,url=url,title=title,description=description)
     
@@ -170,6 +191,7 @@ def logout():
     flash('Logged out. Please log in to see your news')
     # return render_template('homepage.html',user_name="My")
     return redirect('/')
+
 
 if __name__ == '__main__':
     app.debug = True

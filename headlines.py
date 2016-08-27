@@ -20,7 +20,6 @@ def get_headlines(newssource):
 
     headline = json.loads(request.data)
     print headline
-
     newssource_dict['url'] = headline['articles'][0]['url']
     newssource_dict['title']= headline['articles'][0]['title']
     newssource_dict['description'] = headline['articles'][0]['description']
@@ -28,7 +27,7 @@ def get_headlines(newssource):
     
     return newssource_dict
 
-get_headlines('bbc-news')
+
 
 
 
