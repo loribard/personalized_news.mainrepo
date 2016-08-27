@@ -2,13 +2,14 @@
 
 
 
-function replaceNewsQuote(results) {
-    $("#news-quote-text").html(results);
+
+function replaceHomePage(results) {
+    $(#registerform).html(results);
 }
 
-function showNewsQuote(evt) {
-    $.get('/news_quote', replaceNewsQuote);
+function showRegistratonForm(evt) {
+    $.get('#saying', replaceHomePage);
 }
 
-$('#get-news-quote-button').on('click', showNewsQuote)
+$('#register').on('click', showRegistrationForm)
 

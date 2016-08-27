@@ -9,7 +9,7 @@ import praw
 from model import connect_to_db, db, User, Category, UserCategory, categories
 from reddit import r,get_authorize_reddit_link
 from main_program import get_news, get_declared_interests, get_news_quote, personalize_name
-
+from headlines import get_headlines
 app = Flask(__name__)
 app.secret_key = "ABC"
 
@@ -148,6 +148,17 @@ def login_process():
     flash('Logged in')
    
     return redirect('/')
+
+@app.route('/bbc')
+def show_bbc_hl():
+    bbc_dict = get_headlines('bbc-news')
+    headline_string = "BBC HEADLINE NEWS"
+    url = bbc_dict['url']
+    title = bbc_dict['title']
+    description = bbc_dict['description']
+
+
+    return render_template("headlines.html",headline_string=headline_string,url=url,title=title,description=description)
     
 
 @app.route('/logout')

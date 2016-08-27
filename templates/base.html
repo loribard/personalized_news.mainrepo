@@ -17,6 +17,7 @@
     <link href='http://fonts.googleapis.com/css?family=Frijole' rel='stylesheet' type='text/css'>
     <link rel='stylesheet' href='/static/ajax-exercise.css'>
     <script src = "http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <style>
         h1, h2, h3, .navbar-brand { font-family: "Anton"; margin: 10px; }
 
@@ -71,18 +72,32 @@
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse"
+      
+            
+                
+                <div class="dropdown">
+                <button class='btn btn-primary dropdown-toggle' type='button' data-toggle="dropdown">Headline News
+                <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                <li> <a href='/bbc'> BBC </a></li>
+                <li> <a href='/the-new-york-times'> The New York Times</a></li>
+                <li> <a href='/cnn'> CNN </a></li>
+                <li> <a href='/google-news'> Google News</a></li>
+                <li> <a href='/associated-press'> Associated Press</a></li>
+              </ul>
+              </div>
+             <div class="collapse navbar-collapse"
              id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li><a href="/register_form">Register</a></li>
+
                 <li><a href='/see-news'>View My News</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
               {% if "user_id" in session %}
-                  <li><a href="/declare_interests">Profile</a></li>
+                  <li><a href="/declare_interests">My Interests</a></li>
                   <li><a href="/logout">Logout</a></li>
               {% else %}
-                  <li><a href="/register_form">Register</a></li>
+                  <li id="register"><a href="/register_form">Register</a></li>
                   <li><a href="/login">Login</a></li>
               {% endif %}
 
@@ -92,8 +107,11 @@
     </div>
     <!-- /.container-fluid -->
 </nav>
-
-
+<!-- <p>
+    <button id="get-news-quote-button" class="btn btn-primary">Get News Quote</button>
+  </p> -->
+<div id="spaceholder">
+</div>
 
 
 <div id="extending">

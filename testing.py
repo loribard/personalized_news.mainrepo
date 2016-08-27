@@ -5,6 +5,21 @@ from model import db, connect_to_db, make_test_data, User, Category, UserCategor
 from server import app
 from db_func import get_category
 
+# to test:
+# python testing.py
+# coverage:
+# coverage run --omit=env/* testing.py
+# for report:
+# coverage report -m
+# coverage html
+
+# def load_tests(loader, tests, ignore):
+#     """Also run our doctests and file-based doctests."""
+
+#     tests.addTests(doctest.DocTestSuite(server))
+#     tests.addTests(doctest.DocFileSuite("tests.txt"))
+#     return tests
+
 class DatabaseTests(TestCase):
     """database tests """
 
