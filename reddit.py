@@ -30,7 +30,7 @@ def get_posts_by_interest(interest):
     """This returns the top five (limit) reddits for the interest chosen"""
 
 
-    subreddit = r.get_subreddit(interest).get_top(limit=5)
+    subreddit = r.get_subreddit(interest).get_top(limit=3)
     
     # r=requests.get('https://www.reddit.com/r/funny.json')
     # data=r.json()

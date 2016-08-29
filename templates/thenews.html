@@ -5,23 +5,35 @@
 
 
 
-<br>
-
+<br<div class="container">
 {% for category, posts in dictionary_to_unpack_in_html.iteritems() %}
-    CATEGORY:
+    <h1>{{category}}</h1><br>
 
-    {{category}}<br>
+<div class = "row">
+
+
     {% for post in posts %}
-    
-    <li><a href='{{post["url"]}}'>{{post["title"]}}</a></li>
+    <div class = "col-md-4" id="news-url">
+  
 
     {% if post["preview_image"] %}
-        <img src='{{post["thumbnail"]}}'>
-        <img src='{{post["preview_image"]}}'>
+        <a href='{{post["preview_image"]}}' class="thumbnail">
+        
+        <img src='{{post["thumbnail"]}}' style="width:150px;height:150px">
+        </a>
+    {% else %}
+        <a href="http://www.planetoons.com/img/6100-t.jpg" class="thumbnail">
+        <img src="http://www.planetoons.com/img/6100-t.jpg" style="width:150px;height:150px"
+        </a>
     {% endif %}
+
+    <h5><a href='{{post["url"]}}'>{{post["title"]}}</a></h5>
+
+    </div>
    
 
     {% endfor %}
+    </div>
 
 {% endfor %}
 

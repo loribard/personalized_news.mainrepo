@@ -1,15 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
-
+<div id="headlines">
 
 <h1>{{headline_string}}</h1>
 
+<br>
 
+<h2>{{description}}</h2>
+<br>
 
-<h3>{{description}}</h3>
-
-<h2><a href='{{url}}'>{{title}}</a></h2>
-
+<h2><a href='{{url}}'>Click for full story: {{title}}</a></h2>
+</div>
 
 
 {% endblock %}

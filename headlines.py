@@ -24,9 +24,8 @@ def get_headlines(newssource):
     newssource_dict['title']= headline['articles'][0]['title']
     newssource_dict['description'] = headline['articles'][0]['description']
    
-    
+   
     return newssource_dict
-
 
 
 
