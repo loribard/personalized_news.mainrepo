@@ -30,12 +30,7 @@ def get_posts_by_interest(interest):
     """This returns the top five (limit) reddits for the interest chosen"""
 
 
-    subreddit = r.get_subreddit(interest).get_top(limit=3)
-    
-    # r=requests.get('https://www.reddit.com/r/funny.json')
-    # data=r.json()
-
-    
+    subreddit = r.get_subreddit(interest).get_top(limit=3)   
     posts = []
         
     for praw_post in subreddit:
@@ -53,41 +48,6 @@ def get_posts_by_interest(interest):
 
     return posts
 
-    def look_at_data(json_file):
-        r = requests.get(json_file)
-        data = r.json()
-        keys = data.keys()
-        print keys
-        return
-
-
-
-
-        # subreddits_dig_deeper = {}
-        # import pdb; pdb.set_trace()
-         # more_info = item_of_interest.replace_more_comments(limit=None,threshold=0)
-         # subreddits_dig_deeper[i] = more_info
-
-    
-
-    
-
- 
-    
-    # for item in data['data']['children']:
-    #   print '*********************'
-    #   print item['data']['preview']['images'][0]['source']['url']
-
- #                for k in keys:
- #                    d = d.get(v, {})
- #                if d:
- #                    return d
-
- #            image_url = find_key(post, ["preview", "images", "0", "source", "url"])
- #            if image_url:
- #                ...
-    # subreddit_urls = {}
-    # for item_of_interest in subreddit:
 
 
 if __name__=="__main__":

@@ -8,7 +8,7 @@ import praw
 
 from model import connect_to_db, db, User, Category, UserCategory, categories
 from reddit import r,get_authorize_reddit_link
-from main_program import get_news, get_declared_interests, get_news_quote, personalize_name
+from main_program import get_news, get_declared_interests, personalize_name
 from headlines import get_headlines
 app = Flask(__name__)
 app.secret_key = "ABC"
@@ -21,16 +21,16 @@ def homepage():
     """ home page, going to ask pass in secret key and code to reddit in order to get OAuth code to use in authorized"""
 
   
-    if session.get('user_id'):
-        # check if logged into Reddit
-        try:
-            user = r.get_me()
-            return render_template("homepage.html")
-        except praw.errors.OAuthScopeRequired:
-            url_for_api = get_authorize_reddit_link()
-            return redirect(url_for_api)
-    else:
-        return render_template('homepage.html')
+    # if session.get('user_id'):
+    #     # check if logged into Reddit
+    #     try:
+    #         user = r.get_me()
+    #         return render_template("homepage.html")
+    #     except praw.errors.OAuthScopeRequired:
+    #         url_for_api = get_authorize_reddit_link()
+    #         return redirect(url_for_api)
+    # else:
+    return render_template('homepage.html')
 
 
 @app.route('/authorize_callback')
@@ -93,10 +93,13 @@ def get_registration_info():
 @app.route("/declare_interests")
 def user_interests_form():
     """ present a list of interests that the user can check. Displayes interests checked before"""
+    user_id = session['user_id']
 
     category_names = categories.keys()
     category_names.sort()
-    category_list = get_declared_interests() 
+    print category_names
+    category_list = get_declared_interests(user_id)
+
 
     return render_template("declare_interests.html",
                            category_names=category_names,
@@ -107,9 +110,7 @@ def user_interests_form():
 @app.route("/declare_interests" , methods=['POST'])
 def register_interests():
     """"Get the user's interests and put them in the UserCategory Table"""
-
-
-    user_id = session['user_id']
+   
 
     if db.session.query(UserCategory):
         db.session.query(UserCategory).filter_by(user_id=user_id).delete()
@@ -158,6 +159,7 @@ def login_process():
     return redirect('/')
 
 
+
 @app.route('/news/<newssource>') 
 def show_bbc_hl(newssource):
     """ to get the Headline news from BBC,CNN,API,Google or New York Times"""
@@ -166,8 +168,8 @@ def show_bbc_hl(newssource):
     bbc_dict = get_headlines(newssource)
     if newssource == 'bbc-news':
         headline_string = "BBC Headline News"
-    elif newssource == 'the-new-york-times':
-        headline_string = "The New York Times Headline News"
+    elif newssource == 'bloomberg':
+        headline_string = "Bloomberg Headline News"
     elif newssource == 'cnn':
         headline_string = "CNN Headline News"
     elif newssource == 'associated-press':
@@ -191,6 +193,17 @@ def logout():
     flash('Logged out. Please log in to see your news')
     # return render_template('homepage.html',user_name="My")
     return redirect('/')
+
+
+@app.route("/important")
+def important():
+    """Important info for logged in users."""
+    if "user_id" in session:
+        return render_template("important.html")
+
+    else:
+        flash("You must be logged in to view the important page")
+        return redirect("/login")
 
 
 if __name__ == '__main__':
