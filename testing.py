@@ -177,7 +177,7 @@ class FlaskTestsLoggedOut(TestCase):
 
         result = self.client.get("/important", follow_redirects=True)
         self.assertNotIn("You are a valued user", result.data)
-        self.assertIn("You must be logged in", result.data)
+        self.assertIn("My News", result.data)
 
 
 class FlaskTestsLoggedIn(TestCase):

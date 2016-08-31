@@ -1,0 +1,88 @@
+    
+        .navbar-brand { font-family: "Anton"; text-align: left; padding:0px;}
+
+        #login  {
+          width:80%;
+          font-size: 125%;
+        }
+
+        .navbar .icon-bar {
+          display: block;
+          width: 22px;
+          height: 10px;
+          background-color: #cccccc;
+          border-radius: 1px;
+          }
+   
+        #headlines {
+          height:100%;
+          width:80%;
+          margin:auto;
+          margin-top:1cm;
+
+        }
+
+        body {
+          width: 100%;
+          height: 100%;
+          background-color: #33ccff;
+                  }
+
+      
+        #saying  {
+          text-align: center;
+          width:80% ;
+          margin: auto;
+          margin-top:2cm;
+
+        }
+
+      .row {
+        background-color: #99ff33;
+      }
+
+      #news-container {
+        box-shadow: black;
+        padding:0;
+
+      }
+       
+
+
+        #categories {
+          margin-left:5cm;
+        }
+
+        .spaced {
+          margin-left:20px; 
+          margin-top: 20px;
+        }
+       
+
+        .navbar-inverse {
+          height:120px;
+          border-top: 10px solid #99ff33;
+          border-bottom: 10px solid #99ff33;
+        }
+
+      #news-url {
+        color:black;
+      }
+
+      .green {
+              background: #99ff33;
+              height: 70px;
+            }
+
+
+
+#changing  {
+    width:80%;
+}
+
+#register_form {
+    width: 80%;
+    size:125%;
+}
+
+         

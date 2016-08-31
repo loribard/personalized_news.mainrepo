@@ -3,7 +3,7 @@ import json
 
 from jinja2 import StrictUndefined
 from flask import Flask, render_template, request, flash, redirect, session, jsonify
-from flask_debugtoolbar import DebugToolbarExtension
+# from flask_debugtoolbar import DebugToolbarExtension
 import praw
 
 from model import connect_to_db, db, User, Category, UserCategory, categories
@@ -111,7 +111,7 @@ def user_interests_form():
 def register_interests():
     """"Get the user's interests and put them in the UserCategory Table"""
    
-
+    user_id = session['user_id']
     if db.session.query(UserCategory):
         db.session.query(UserCategory).filter_by(user_id=user_id).delete()
         db.session.commit()
@@ -188,8 +188,10 @@ def show_bbc_hl(newssource):
 def logout():
     """Log out."""
 
-    del session['user_id']
-    del session['user_name']
+
+    session.clear()
+    # del session['user_id']
+    # del session['user_name']
     flash('Logged out. Please log in to see your news')
     # return render_template('homepage.html',user_name="My")
     return redirect('/')
@@ -198,8 +200,10 @@ def logout():
 @app.route("/important")
 def important():
     """Important info for logged in users."""
-    if "user_id" in session:
-        return render_template("important.html")
+    if ("user_id" in session):
+        if ("user_name" in session):
+      
+            return render_template("important.html")
 
     else:
         flash("You must be logged in to view the important page")
@@ -210,7 +214,7 @@ if __name__ == '__main__':
     app.debug = True
     app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
     connect_to_db(app) 
-    DebugToolbarExtension(app)
+    # DebugToolbarExtension(app)
     app.run(debug=True, host="0.0.0.0", port=65010)
 
 

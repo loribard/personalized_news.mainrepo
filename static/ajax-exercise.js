@@ -1,15 +1,22 @@
 "use strict";
 
-
-
-
-function replaceHomePage(results) {
-    $(#registerform).html(results);
+function replaceNews(results) {
+    $('#changing').html(results);
 }
 
-function showRegistratonForm(evt) {
-    $.get('#saying', replaceHomePage);
+
+function showRedditnews(evt)  {
+    $.get('/see-news',['.container'],replaceNews);
 }
 
-$('#register').on('click', showRegistrationForm)
+
+$('#see-news').on('click',showRedditnews);
+
+
+
+$(document).ready(function() {
+    $(#register_form).ajaxForm(function() {
+        alert("Thank you for registering!");
+    });
+});
 

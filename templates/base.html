@@ -7,6 +7,7 @@
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
       rel="stylesheet">
     <link  href='/static/mystyle.css' rel='stylesheet'>
+
     <title>My News</title>
 
 </head>
@@ -45,7 +46,7 @@
                 
             
               
-                <li><a href='/see-news'>View My News</a></li>
+                <li id="see-news"><a href='/see-news'>View My News</a></li>
          </ul>
  
           <ul class="nav navbar-nav navbar-right">
@@ -63,7 +64,7 @@
     </div>
     <!-- /.container-fluid -->
 </nav>
-
+<div id="changing"></div>
 <!-- <p>
     <button id="get-news-quote-button" class="btn btn-primary">Get News Quote</button>
   </p> -->
@@ -82,6 +83,8 @@
    type="text/javascript"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
+<script src="http://malsup.github.com/jquery.form.js"></script> 
+<script src="/static/ajax-exercise.js"></script>
 {% block content %}
 {% endblock %}
 

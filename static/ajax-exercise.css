@@ -4,9 +4,13 @@ h2 {
     padding-top: 0.2em;
 }
 
-#get-news-text {
+#changing  {
     border: solid 1px blue;
     padding: 1em;
     margin: 1em;
 }
 
+#register_form {
+    width: 80%;
+    size:125%;
+}
