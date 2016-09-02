@@ -26,11 +26,11 @@ def get_authorize_reddit_link():
 
 
 # interest='funny'
-def get_posts_by_interest(interest):
+def get_posts_by_interest(interest, limit=3):
     """This returns the top five (limit) reddits for the interest chosen"""
 
 
-    subreddit = r.get_subreddit(interest).get_top(limit=3)   
+    subreddit = r.get_subreddit(interest).get_top(limit=limit)   
     posts = []
         
     for praw_post in subreddit:

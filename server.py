@@ -7,7 +7,7 @@ from flask import Flask, render_template, request, flash, redirect, session, jso
 import praw
 
 from model import connect_to_db, db, User, Category, UserCategory, categories
-from reddit import r,get_authorize_reddit_link
+from reddit import r,get_authorize_reddit_link, get_posts_by_interest
 from main_program import get_news, get_declared_interests, personalize_name
 from headlines import get_headlines
 app = Flask(__name__)
@@ -44,12 +44,18 @@ def get_authorized():
     return redirect('/')
     
 
-@app.route('/news_quote')
+@app.route('/news_quote', methods=["POST"])
 def print_news_quote():
     """ Prints a random quote about the news"""
-
-
-    return get_news_quote()
+    dict_misc = {}
+    category_name = request.form.get("category")
+    print category_name
+    category = Category.query.filter_by(category_name=category_name).one()
+    subreddit_url = category.subreddit_search
+    more_news = get_posts_by_interest(subreddit_url,12)
+    dict_misc[category_name] = more_news
+    
+    return jsonify(dict_misc)
 
 
 @app.route('/see-news')
@@ -59,6 +65,7 @@ def get_news_page():
 
     if session.get('user_id'):
         dictionary_to_unpack_in_html = get_news()
+        
         return render_template("thenews.html",dictionary_to_unpack_in_html=dictionary_to_unpack_in_html)
     else:
         flash("Please login if you're a member or register to become a member to see your news")

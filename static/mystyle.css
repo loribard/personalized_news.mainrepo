@@ -65,16 +65,21 @@
           border-bottom: 10px solid #99ff33;
         }
 
-      #news-url {
-        color:black;
-      }
+
 
       .green {
               background: #99ff33;
               height: 70px;
             }
 
-
+.news {
+  
+  background-color: #99ff33;
+  font-family="Anton";
+  height:50px;
+  width:200px;
+  font-size: 150%;
+}
 
 #changing  {
     width:80%;
