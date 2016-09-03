@@ -41,6 +41,7 @@ def get_authorized():
     state = request.args.get('state', '')
     code = request.args.get('code', '')
     info = r.get_access_information(code)
+
     return redirect('/')
     
 
@@ -49,11 +50,10 @@ def print_news_quote():
     """ Prints a random quote about the news"""
     dict_misc = {}
     category_name = request.form.get("category")
-
     print category_name
     category = Category.query.filter_by(category_name=category_name).one()
     subreddit_url = category.subreddit_search
-    more_news = get_posts_by_interest(subreddit_url,12)
+    more_news = get_posts_by_interest(subreddit_url,21)
     dict_misc[category_name] = more_news
     
     return jsonify(dict_misc)

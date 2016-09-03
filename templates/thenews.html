@@ -7,7 +7,7 @@
 
 {% for category, posts in dictionary_to_unpack_in_html.iteritems() %}
 <div class = "row" id="get_news_now" >
-    <button  type= "button" class="favorite-btn btn btn-primary" value = "0" id="{{category}}">{{category}}</button>
+    <button  type= "button" class="favorite-btn btn btn-primary" value = "1" id="{{category}}">{{category}}</button>
 </div>
 
 
@@ -15,10 +15,16 @@
 
     {% for post in posts %}
     <div class = "col-md-4">
-    <div class= "{{category}}" >
-  
+    <div class = "{{category}}" >
+    <div>
 
-    {% if post["preview_image"] and post["thumbnail"] and post["thumbnail"] != "self" %}
+    {% if post["thumbnail"] == "self" and post["preview_image"] == False %}
+       <a class="preview-image" href="http://www.planetoons.com/img/6100-t.jpg" style="background-color:black;" >
+        <img class="thumbnail" src="http://www.planetoons.com/img/6100-t.jpg" style="width:150px;height:150px">
+        </a>
+
+
+    {% elif post["preview_image"] and post["thumbnail"] %}
         <a class="preview-image" href='{{post["preview_image"]}}'>
         
         <img class="thumbnail" src='{{post["thumbnail"]}}' style="width:150px;height:150px">
@@ -39,6 +45,7 @@
         <img class="thumbnail" src="http://www.planetoons.com/img/6100-t.jpg" style="width:150px;height:150px">
         </a>
     {% endif %}
+    </div>
 
     <h5><a  href='{{post["url"]}}'>{{post["title"]}}</a></h5>
 
@@ -87,30 +94,43 @@
         console.log(keep);
         var topic_list = $("[class='"+category+ "']")
         for (var i=0; i<topic_list.length;i++){
-            console.log(topic_list[i]);
+ 
 
-            console.log('getting element');
+         
             console.log($("[class='"+category+ "'] h5"));
+            
 
             $("[class='"+category+ "'] h5").eq(i).html('<a>'+ keep[i]["title"]+'</a>');
+
             $("[class='"+category+ "'] h5 a").eq(i).attr("href",keep[i]["url"]);
-            if (keep[i]["preview_image"]){
-            $('.preview-image').eq(i).attr("href",keep[i]["preview_image"]);
-        } else {
-            $('.preview-image').eq(i).attr("href","http://www.planetoons.com/img/6100-t.jpg" );
-        }
-            if (keep[i]["thumbnail"]) {
-            $('.thumbnail').eq(i).attr("src",keep[i]["thumbnail"]);
-        } else {
-             $('.preview-image').eq(i).attr("src","http://www.planetoons.com/img/6100-t.jpg" );
-        }
 
-        }
-        // var val_val = $('#1'+ category).val();
+            console.log( $("[class='"+category+ "'] div"));
 
-        // $("#1"+category).click(function() {val_val++});
+            if (keep[i]["preview_image"]) {
+            $("[class='"+category+ "'] div a").eq(i).attr("href",keep[i]["preview_image"]);
+
+            } else {
+                $("[class='"+category+ "'] div a").eq(i).attr("href","http://www.planetoons.com/img/6100-t.jpg");
+                // $('.preview-image').eq(i).attr("href",keep[i]["preview_image"]);
+            }
+            
         
-// need to put the output data here
+            // $("[class='"+category+ "'] p ").eq(i).attr("href","http://www.planetoons.com/img/6100-t.jpg")
+                // $('.preview-image').eq(i).attr("href","http://www.planetoons.com/img/6100-t.jpg" );
+       
+            if (keep[i]["thumbnail"] != "self" && keep[i]["thumbnail"] != ""  ) {
+
+            $("[class='"+category+ "'] div img").eq(i).attr("src",keep[i]["thumbnail"]);
+
+        } else {
+            $("[class='"+category+ "'] div img").eq(i).attr("src","http://www.planetoons.com/img/6100-t.jpg");
+        }
+         
+            // $("[class='"+category+ "'] p ").eq(i).attr("src","http://www.planetoons.com/img/6100-t.jpg" );
+       
+
+       }
+ 
     }
 $(".favorite-btn").click(addMoreNews);
 
