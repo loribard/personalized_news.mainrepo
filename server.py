@@ -49,6 +49,7 @@ def print_news_quote():
     """ Prints a random quote about the news"""
     dict_misc = {}
     category_name = request.form.get("category")
+
     print category_name
     category = Category.query.filter_by(category_name=category_name).one()
     subreddit_url = category.subreddit_search

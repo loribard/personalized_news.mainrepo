@@ -4,12 +4,10 @@
 <!-- <script src="/static/ajax-exercise.js"></script> -->
 
 
-<br>
+
 {% for category, posts in dictionary_to_unpack_in_html.iteritems() %}
-<div class = "row" id="get_news_now">
+<div class = "row" id="get_news_now" >
     <button  type= "button" class="favorite-btn btn btn-primary" value = "0" id="{{category}}">{{category}}</button>
-
-
 </div>
 
 
@@ -20,7 +18,7 @@
     <div class= "{{category}}" >
   
 
-    {% if post["preview_image"] and post["thumbnail"] %}
+    {% if post["preview_image"] and post["thumbnail"] and post["thumbnail"] != "self" %}
         <a class="preview-image" href='{{post["preview_image"]}}'>
         
         <img class="thumbnail" src='{{post["thumbnail"]}}' style="width:150px;height:150px">
@@ -30,15 +28,15 @@
         
         <img class="thumbnail" src ='{{post["preview_image"]}}' style="width:150px;height:150px">
         </a>
-    {% elif post["thumbnail"] %}
+    {% elif post["thumbnail"] and post["thumbnail"] != "self" %}
         <a class="preview-image" href="http://www.planetoons.com/img/6100-t.jpg" style="background-color:black;" >
         
-        <img class="thumbnail" src='{{post["preview_image"]}}' style="width:150px;height:150px">
+        <img class="thumbnail" src='{{post["thumbnail"]}}' style="width:150px;height:150px">
         </a>
 
     {% else %}
-        <a href="http://www.planetoons.com/img/6100-t.jpg" style="background-color:black;"  class="thumbnail">
-        <img src="http://www.planetoons.com/img/6100-t.jpg" style="width:150px;height:150px"
+        <a class="preview-image" href="http://www.planetoons.com/img/6100-t.jpg" style="background-color:black;">
+        <img class="thumbnail" src="http://www.planetoons.com/img/6100-t.jpg" style="width:150px;height:150px">
         </a>
     {% endif %}
 
@@ -58,22 +56,44 @@
       function addMoreNews(evt) {
         console.log("you are here");
         var category = this.id; // this is the id on the button we clicked, which is the image's id
-
+        console.log(category)
+        
         $.post("/news_quote", {'category': category}, addMoreNewsPlease);
     }
 
     function addMoreNewsPlease(result) {
 
         console.log(result);
-        var listOfTwelveArticles =result["Science"];
-        var start=science_val*3;
+
+        var category = Object.keys(result)[0]
+        console.log(category);
+
+        // if category has a space{}
+            // var val_val = $("[id='1" + category +"]").val()
+            // refer to example and figure out how to add extra quotation marks in between the comment above ^
+
+        // elseif {}
+
+        var val_val = $("[id='"+category+ "']").val();
+        console.log("val_val=" +val_val);
+
+        $("[id='"+category+"']").click(function() {val_val++; $("[id='"+category+"']").val(val_val)});
+
+        // var category = Object.keys(result)[0]
+
+        var listOfTwelveArticles =result[category];
+        var start=val_val*3;
         var keep=listOfTwelveArticles.slice(start,start+3);
         console.log(keep);
-        var science_list = $('.Science')
-        for (var i=0; i<science_list.length;i++){
-            console.log(science_list[i]);
-            $('.Science h5').eq(i).html('<a>'+ keep[i]["title"]+'</a>');
-            $('.Science h5 a').eq(i).attr("href",keep[i]["url"]);
+        var topic_list = $("[class='"+category+ "']")
+        for (var i=0; i<topic_list.length;i++){
+            console.log(topic_list[i]);
+
+            console.log('getting element');
+            console.log($("[class='"+category+ "'] h5"));
+
+            $("[class='"+category+ "'] h5").eq(i).html('<a>'+ keep[i]["title"]+'</a>');
+            $("[class='"+category+ "'] h5 a").eq(i).attr("href",keep[i]["url"]);
             if (keep[i]["preview_image"]){
             $('.preview-image').eq(i).attr("href",keep[i]["preview_image"]);
         } else {
@@ -86,6 +106,9 @@
         }
 
         }
+        // var val_val = $('#1'+ category).val();
+
+        // $("#1"+category).click(function() {val_val++});
         
 // need to put the output data here
     }
@@ -93,9 +116,9 @@ $(".favorite-btn").click(addMoreNews);
 
 
 
-var science_val = $('#Science').val()
+// var val_val = $('#1'+ category).val();
 
-$("#Science").click(function() {science_val++});
+// $("#1"+category).click(function() {val_val++});
 
 
 

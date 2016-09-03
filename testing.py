@@ -129,6 +129,20 @@ class FlaskDatabaseTests(TestCase):
 
         self.assertEqual(result.status_code, 200)
 
+    # def test_category_database(self):
+
+    #     """in test database:pets = Category(category_name='Pets', subreddit_search=["aww", "cats", "catgifs", "dogs", "pets", "doggifs", "animalsbeingderps"])"""
+
+    #     category = Category.query.get(1)
+    #     categoryname = category.category_name
+       
+    #     category_search_url = category.subreddit_search
+    
+
+    #     result = self.client.get(data={categoryname: "Pets"})
+    #     self.assertEqual(result.data)
+
+
     def test_login(self):
         """test login page"""
 
