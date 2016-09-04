@@ -1,33 +1,18 @@
     
         .navbar-brand { font-family: "Anton"; text-align: left; padding:0px;}
 
-        #login  {
-          width:80%;
-          font-size: 125%;
-        }
-
-        .navbar .icon-bar {
-          display: block;
-          width: 22px;
-          height: 10px;
-          background-color: #cccccc;
-          border-radius: 1px;
-          }
-
         #headlines {
-          height:100%;
           width:80%;
           margin:auto;
           margin-top:1cm;
-
+          text-indent: 0px;
         }
 
         body {
-
-          width: 100%;
-          height: 100%;
+          padding-top:50px;
           background-color: #33ccff;
-                  }
+          text-indent:1.5em;
+        }
 
       
         #saying  {
@@ -35,28 +20,11 @@
           width:80% ;
           margin: auto;
           margin-top:2cm;
-
         }
 
-
-
-      #news-container {
-        box-shadow: black;
-        padding:0;
-
-      }
-       
-
-
-        #categories {
-          margin-left:5cm;
+        form {
+          margin:50px;
         }
-
-        .spaced {
-          margin-left:20px; 
-          margin-top: 20px;
-        }
-       
 
         .navbar-inverse {
           height:120px;
@@ -64,29 +32,8 @@
           border-bottom: 10px solid #99ff33;
         }
 
+        #changing  {
+          width:80%;
+        }
 
-
-      .green {
-              background: #99ff33;
-              height: 70px;
-            }
-
-.news {
-  
-  background-color: #99ff33;
-  font-family="Anton";
-  height:50px;
-  width:200px;
-  font-size: 150%;
-}
-
-#changing  {
-    width:80%;
-}
-
-#register_form {
-    width: 80%;
-    size:125%;
-}
-
-         
+      

@@ -2,33 +2,38 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<form action="/declare_interests" method="POST">
+
+
+<form action="/declare_interests" role="form" class="form-inline" method="POST">
+<div class="form-group">
 <ul id = "categories"> 
 {% if "user_id" in session %}
  
-<h1 > I'm interested in: <h1>
+<h1 > I'm interested in: </h1>
 
 {% for category in category_names %}
     
-    <label style="font-size:85%">{{category}}
+    <label style="font-size:200%">{{category}}
         <input type="checkbox"
+               
                name="interest_change"
                value="{{category}}"
             {% if category in category_list %}
                checked="checked"
             {% endif %}
-        >
-        
+        >   
     </label>
     <br>
 {% endfor %}
-
     <div>
-        <input style="background-color:Transparent;" type="submit" value="Submit Interests">
+        <input style="background-color:Transparent;" type="submit"  value="Submit Interests">
     </div>
 {% endif %}
 </ul>
+</div>
 </form>
+
+
 
 {% endblock %}
    {{User.query.get(int('user_id')).firstname}}

@@ -2,9 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
       rel="stylesheet">
     <link  href='/static/mystyle.css' rel='stylesheet'>
 
@@ -28,12 +30,12 @@
               {% endif %}   
               </a>
         </div>
+      
  
         <ul class="nav navbar-nav">
               
               <li class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown">Headline News
-              <span class="caret"></span></a>
+              <a class="dropdown-toggle" data-toggle="dropdown"><h4>Headline News          <span class="caret"></span></h4></a>
                 <ul class="dropdown-menu">
                   <li> <a href='/news/bbc-news'> BBC </a></li>
                   <li> <a href='/news/bloomberg'> Bloomberg</a></li>
@@ -41,34 +43,24 @@
                   <li> <a href='/news/google-news'> Google News</a></li>
                   <li> <a href='/news/associated-press'> Associated Press</a></li>
                 </ul>
-
-              </li>
-                
-            
-              
-                <li id="see-news"><a href='/see-news'>View My News</a></li>
+              </li>            
+              <li id="see-news"><a href='/see-news'><h4>View My News</h4></a></li>
          </ul>
- 
+        
           <ul class="nav navbar-nav navbar-right">
               {% if "user_id" in session %}
-                  <li><a href="/declare_interests">My Interests</a></li>
-                  <li><a href="/logout">Logout</a></li>
+                  <li><a href="/declare_interests"><h4>My Interests</h4></a></li>
+                  <li><a href="/logout"><h4>Logout</h4></a></li>
               {% else %}
-                  <li id="register"><a href="/register_form">Register</a></li>
-                  <li><a href="/login">Login</a></li>
+                  <li id="register"><a href="/register_form"><h4>Register</h4></a></li>
+                  <li><a href="/login"><h4>Login</h4></a></li>
               {% endif %}
-
           </ul>
-            
-        <!-- /.navbar-collapse -->
     </div>
-    <!-- /.container-fluid -->
 </nav>
-<div id="changing"></div>
-<!-- <p>
-    <button id="get-news-quote-button" class="btn btn-primary">Get News Quote</button>
-  </p> -->
+</div>
 
+<div id="changing"></div>
 
 <div id="extending">
     {% for flash in get_flashed_messages() %}
@@ -76,7 +68,6 @@
     {% endfor %} 
 </div>     
 
-</div>
 
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" 
