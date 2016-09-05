@@ -23,29 +23,29 @@
         <div>
 
         {% if post["thumbnail"] == "self" and post["preview_image"] == False %}
-        <a class="preview-image" href="http://www.planetoons.com/img/6100-t.jpg" >
-        <img class="img-thumbnail img-responsive img-rounded center-block" src="http://www.planetoons.com/img/6100-t.jpg" style="width:300px;height:300px;background-color:#99ff33;">
+        <a class="preview-image" href="photoalt.jpg" >
+        <img class="thumbnail img-responsive img-rounded center-block" src="static/photoalt.jpg" style="width:300px;height:300px;background-color:#99ff33;">
         </a>
 
 
         {% elif post["preview_image"] and post["thumbnail"] %}
         <a class="preview-image" href='{{post["preview_image"]}}'>
-        <img class="img-thumbnail img-responsive img-rounded center-block" src='{{post["thumbnail"]}}' style="width:200px;height:200px;background-color:#99ff33;">
+        <img class="thumbnail img-responsive img-rounded center-block" src='{{post["preview_image"]}}' style="width:200px;height:200px;background-color:#99ff33;">
         </a>
 
         {% elif post["preview_image"] %}
         <a class="preview-image" href='{{post["preview_image"]}}'>   
-        <img class="img-thumbnail img-responsive img-rounded center-block" src ='{{post["preview_image"]}}' style="width:200px;height:200px;background-color:#99ff33;">
+        <img class="thumbnail img-responsive img-rounded center-block" src ='{{post["preview_image"]}}' style="width:200px;height:200px;background-color:#99ff33;">
         </a>
 
         {% elif post["thumbnail"] and post["thumbnail"] != "self" and post["thumbnail"] != "nsfw" %}
-        <a class="preview-image" href="http://www.planetoons.com/img/6100-t.jpg"  >    
-        <img class="img-thumbnail img-responsive img-rounded center-block" src='{{post["thumbnail"]}}' style="width:200px;height:200px;background-color:#99ff33;">
+        <a class="preview-image" href="static/photoalt.jpg"  >    
+        <img class="thumbnail img-responsive img-rounded center-block" src='{{post["thumbnail"]}}' style="width:200px;height:200px;background-color:#99ff33;">
         </a>
 
          {% else %}
-        <a class="preview-image" href="http://www.planetoons.com/img/6100-t.jpg" >
-        <img class="img-thumbnail img-responsive img-rounded center-block" src="http://www.planetoons.com/img/6100-t.jpg" style="width:200px;height:200px;background-color:#99ff33;">
+        <a class="preview-image" href="static/photoalt.jpg" >
+        <img class="thumbnail img-responsive img-rounded center-block" src="static/photoalt.jpg" style="width:200px;height:200px;background-color:#99ff33;">
         </a>
         {% endif %}
     </div>
@@ -81,21 +81,22 @@
         console.log(keep);
         var topic_list = $("[class='"+category+ "']")
         for (var i=0; i<topic_list.length;i++){
-            $("[class='"+category+ "'] h5").eq(i).html('<a>'+ keep[i]["title"]+'</a>');
-            $("[class='"+category+ "'] h5 a").eq(i).attr("href",keep[i]["url"]);
+            $("[class='"+category+ "'] h4").eq(i).html('<a>'+ keep[i]["title"]+'</a>');
+            $("[class='"+category+ "'] h4 a").eq(i).attr("href",keep[i]["url"]);
 
             if (keep[i]["preview_image"]) {
                 $("[class='"+category+ "'] div a").eq(i).attr("href",keep[i]["preview_image"]);
             } else {
-                $("[class='"+category+ "'] div a").eq(i).attr("href","http://www.planetoons.com/img/6100-t.jpg");
+                $("[class='"+category+ "'] div a").eq(i).attr("href","static/photoalt.jpg");
             }
             
             if (keep[i]["thumbnail"] != "self" && keep[i]["thumbnail"] != ""  ) {
                 $("[class='"+category+ "'] div img").eq(i).attr("src",keep[i]["thumbnail"]);
             } else {
-                $("[class='"+category+ "'] div img").eq(i).attr("src","http://www.planetoons.com/img/6100-t.jpg");
+                $("[class='"+category+ "'] div img").eq(i).attr("src","static/photoalt.jpg");
             }
        }
+}
     
 $(".favorite-btn").click(addMoreNews);
 
