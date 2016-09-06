@@ -71,7 +71,7 @@ def get_news_page():
 
     if session.get('user_id'):
         dictionary_to_unpack_in_html = get_news()
-        print dictionary_to_unpack_in_html
+        # print dictionary_to_unpack_in_html
         return render_template("thenews.html",dictionary_to_unpack_in_html=dictionary_to_unpack_in_html)
     else:
         flash("Please login if you're a member or register to become a member to see your news")

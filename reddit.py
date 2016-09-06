@@ -1,12 +1,10 @@
 import json
 import requests
-import praw
 import os
+
+import praw
 from flask import Flask, render_template, request, flash, redirect, session
 from pprint import pprint
-
-
-
 
 CLIENT_ID =  os.environ.get('CLIENT_ID')
 CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
@@ -28,11 +26,9 @@ def get_authorize_reddit_link():
 
 def get_posts_by_interest(interest, limit=3):
     """This returns the top five (limit) reddits for the interest chosen
-        >>> get_posts_by_interest("funny")
-        3
+        >>> get_posts_by_interest("funny") #doctest: +ELLIPSIS
+        3...
         """
-
-
 
     subreddit = r.get_subreddit(interest).get_top(limit=limit)   
     posts = []
@@ -52,13 +48,10 @@ def get_posts_by_interest(interest, limit=3):
         post["preview_image"] = preview_image
         posts.append(post)
 
+    
     print len(posts)
-    return get_posts(posts)
-
-def get_posts(posts):
-
-
     return posts
+
 
 def get_thumbnail(thumbnail):
     """test to make sure the thumbnail is legitmate

@@ -39,8 +39,9 @@ three items***
 
 **Testing Coverage**
 
-As of this 9/6/2016, testing is at 78% coverage. I hope to increase the
-testing coverage in the near future.
+Because the project connects to the reddit api, I need to make a mock database to improve the testing coverage.
+
+<img src = "static/coveragereport.jpg">
 
 **Technology Stack**
 
@@ -51,4 +52,6 @@ testing coverage in the near future.
 About the Developer
 
 Lori Russell Bard
+lori.r.bard@gmail.com
+650-867-2067
 [Linkedin](https://www.linkedin.com/in/lori-bard)

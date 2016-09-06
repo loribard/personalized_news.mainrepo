@@ -14,7 +14,7 @@ from main_program import get_news
 # to test:
 # python testing.py
 # coverage:
-# coverage run --omit=seed.,env/* testing.py
+# coverage run --omit=seed.py,env/* testing.py
 # for report:
 # coverage report -m
 # coverage html
@@ -93,11 +93,13 @@ class FlaskDatabaseTests(TestCase):
 
     def setUp(self):
         """before every test"""
+        
         self.client = app.test_client()
         app.config['TESTING'] = True
-        connect_to_db(app, db_uri = 'postgresql:///testsubreddits')
+        connect_to_db(app, 'postgresql:///testsubreddits')
         db.create_all()
         make_test_data()
+        
 
 
     def tearDown(self):
@@ -153,7 +155,6 @@ class FlaskDatabaseTests(TestCase):
 
         self.assertEqual(user.firstname,"lori")
 
-
         
 
 class MyAppIntegrationTestCase(TestCase):
@@ -177,8 +178,6 @@ class MyAppIntegrationTestCase(TestCase):
         app.config['TESTING'] = True
         result = client.get('/news/bbc-news')
         self.assertIn('<div id="headlines">', result.data)
-
-
 
 
 
