@@ -26,7 +26,7 @@ Screenshots
 
 Homepage
 
-![](media/image2.jpeg){width="6.0in" height="3.75in"}
+![](media/image2.jpeg){width="600px" height="375px"}
 
 Headline News using newsapi.org
 
