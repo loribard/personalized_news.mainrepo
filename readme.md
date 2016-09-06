@@ -51,7 +51,7 @@ Because the project connects to the reddit api, I need to make a mock database t
 
 About the Developer
 
-Lori Russell Bard
-lori.r.bard@gmail.com
-650-867-2067
+Lori Russell Bard                          
+lori.r.bard@gmail.com                           
+650-867-2067                         
 [Linkedin](https://www.linkedin.com/in/lori-bard)
