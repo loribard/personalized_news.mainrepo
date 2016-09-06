@@ -1,6 +1,6 @@
 **My News**
 
-![](media/image1.gif)
+
 
 MyNews
 
@@ -26,7 +26,7 @@ Screenshots
 
 Homepage
 
-![](media/image2.jpeg){width="600px" height="375px"}
+![](static/Screen Shot 2016-09-06 at 8:15.44 AM.jpg){width="300px" height="187px"}
 
 Headline News using newsapi.org
 
