@@ -41,7 +41,7 @@ three items***
 
 Because the project connects to the reddit api, I need to make a mock database to improve the testing coverage.
 
-<img src = "static/coveragereport.jpg">
+<img src="static/coveragereport.jpg">
 
 **Technology Stack**
 
