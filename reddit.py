@@ -25,18 +25,24 @@ def get_authorize_reddit_link():
                                        refreshable=True)
 
 
-# interest='funny'
+
 def get_posts_by_interest(interest, limit=3):
-    """This returns the top five (limit) reddits for the interest chosen"""
+    """This returns the top five (limit) reddits for the interest chosen
+        >>> get_posts_by_interest("funny")
+        3
+        """
+
 
 
     subreddit = r.get_subreddit(interest).get_top(limit=limit)   
     posts = []
         
     for praw_post in subreddit:
+        thumbnail = get_thumbnail(praw_post.thumbnail)
         post = {"title": praw_post.title,
                 "url": praw_post.url,
-                "thumbnail": praw_post.thumbnail}
+                "thumbnail": thumbnail}
+
 
         if hasattr(praw_post, "preview"):
             preview_image = praw_post.preview['images'][0]['source']['url']
@@ -46,7 +52,26 @@ def get_posts_by_interest(interest, limit=3):
         post["preview_image"] = preview_image
         posts.append(post)
 
+    print len(posts)
+    return get_posts(posts)
+
+def get_posts(posts):
+
+
     return posts
+
+def get_thumbnail(thumbnail):
+    """test to make sure the thumbnail is legitmate
+
+        >>> get_thumbnail("default")
+        ''
+        >>> get_thumbnail("http://www.google.com")
+        'http://www.google.com'
+    """
+
+    if thumbnail in ["default","self","nsfw",""]:
+        thumbnail = ""
+    return thumbnail
 
 
 

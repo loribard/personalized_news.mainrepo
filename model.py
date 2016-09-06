@@ -15,9 +15,11 @@ categories = {
     "Pets": ["aww", "cats", "catgifs", "dogs", "pets", "doggifs", "animalsbeingderps"],
     "Wild Animals": ["wildlife", "wildliferehab", "babyelephantgifs", "tigerpics" , "giraffes"],
     "Local News": ["sanfrancisco", "burlingame", "bayarea", "sfbeer", "sfbayhousing"],
-    "Life Tips": ["lifeprotips", "eplainlikeimfive"],
-    "World News": ["worldnews"],
-    "Movie Scuttlebutt": ['movies'],
+    "World News": ["worldnews",'politics'],
+    "Movies": ['movies'],
+    "Humor":['funny','AdviceAnimals', 'Jokes'],
+    "Fun Facts":['todayilearned','science','space','explainlikeimfive','lifeprotips','YouShouldKnow'],
+    "Technology":['technology','Android',"Bitcoin","programming","apple"]
 
 
 }
@@ -126,7 +128,7 @@ def make_test_data():
     # We need to add to the session or it won't ever be stored
     db.session.add_all([lori, junior, rusty])
 
-    # make a couple movies
+    # make a couple categories
     pets = Category(category_name='Pets', subreddit_search=["aww", "cats", "catgifs", "dogs", "pets", "doggifs", "animalsbeingderps"])
     sports = Category(category_name='Sports', subreddit_search=["sports", "olympics", "pro sports", "college sports", "action sports"])
     # We need to add to the session or it won't ever be stored
@@ -134,7 +136,7 @@ def make_test_data():
 
     db.session.flush()
 
-    # make a couple ratings
+    # make a couple association table enries
     lori_pets = UserCategory(user_id=lori.user_id, category_id=pets.category_id)
     rusty_pets = UserCategory(user_id=rusty.user_id, category_id=pets.category_id)
     junior_pets = UserCategory(user_id=junior.user_id, category_id=pets.category_id)

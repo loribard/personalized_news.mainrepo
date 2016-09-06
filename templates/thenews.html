@@ -7,57 +7,47 @@
 
 {% for category, posts in dictionary_to_unpack_in_html.iteritems() %}
 <div class = "container-fluid">
-<div class = "row" id= "get_news_now">
+    <div class = "row" id= "get_news_now">
 
-    <button  type= "button" class="favorite-btn btn btn-default btn-block" value = "1" id="{{category}}" style="background-color:#1ac6ff;"><h3>{{category}}</h3></button>  
+    <button  type= "button" class="favorite-btn btn btn-default btn-block" value = "1" id="{{category}}" style="background-color:#1ac6ff;"><h3 style="font-size:40px;color:#007399;">{{category}}</h3></button>  
 
-</div>
+    </div>
 </div><br>
 
-    <div class="container-fluid">
+<div class="container-fluid">
     <div class="row" >
 
-    {% for post in posts %}
+        {% for post in posts %}
         <div class = "col-md-4">
-        <div class = "{{category}}" >
-        <div>
-
-        {% if post["thumbnail"] == "self" and post["preview_image"] == False %}
-        <a class="preview-image" href="photoalt.jpg" >
-        <img class="thumbnail img-responsive img-rounded center-block" src="static/photoalt.jpg" style="width:300px;height:300px;background-color:#99ff33;">
-        </a>
+            <div class = "{{category}}" >
+                <div>
 
 
-        {% elif post["preview_image"] and post["thumbnail"] %}
-        <a class="preview-image" href='{{post["preview_image"]}}'>
-        <img class="thumbnail img-responsive img-rounded center-block" src='{{post["preview_image"]}}' style="width:200px;height:200px;background-color:#99ff33;">
-        </a>
+                    {% if post["preview_image"] %}
+                    <a class="preview-image" href='{{post["preview_image"]}}'>   
+                        <img class="thumbnail img-thumbnail img-responsive img-rounded center-block" src ='{{post["preview_image"]}}' style="height:200px;width:200px;background-color:#99ff33;object-fit:cover;overflow:hidden;">
+                    </a>
 
-        {% elif post["preview_image"] %}
-        <a class="preview-image" href='{{post["preview_image"]}}'>   
-        <img class="thumbnail img-responsive img-rounded center-block" src ='{{post["preview_image"]}}' style="width:200px;height:200px;background-color:#99ff33;">
-        </a>
+                    {% elif post["thumbnail"] %}
+                    <a class="preview-image" href="static/photoalt.jpg"  >    
+                        <img class="thumbnail img-thumbnail img-responsive img-rounded center-block" src='{{post["thumbnail"]}}' style="height:200px;width:200px;background-color:#99ff33;object-fit:cover;overflow:hidden;">
+                    </a>
 
-        {% elif post["thumbnail"] and post["thumbnail"] != "self" and post["thumbnail"] != "nsfw" %}
-        <a class="preview-image" href="static/photoalt.jpg"  >    
-        <img class="thumbnail img-responsive img-rounded center-block" src='{{post["thumbnail"]}}' style="width:200px;height:200px;background-color:#99ff33;">
-        </a>
+                    {% else %}
+                    <a class="preview-image" href="static/photoalt.jpg" >
+                        <img class="thumbnail img-thumbnail img-responsive img-rounded center-block" src="static/photoalt.jpg" style="height:200px;width:200px;background-color:#99ff33;object-fit:cover;overflow:hidden;">
+                    </a>
+                    {% endif %}
+                </div>
 
-         {% else %}
-        <a class="preview-image" href="static/photoalt.jpg" >
-        <img class="thumbnail img-responsive img-rounded center-block" src="static/photoalt.jpg" style="width:200px;height:200px;background-color:#99ff33;">
-        </a>
-        {% endif %}
-    </div>
+                <h4 style="text-indent:0px;"><a  href='{{post["url"]}}'>{{post["title"]}}</a></h4>
 
-    <h4 style="text-indent:0px;"><a  href='{{post["url"]}}'>{{post["title"]}}</a></h4>
+            </div>
+        </div>
+        {% endfor %}
 
     </div>
-    </div>
-    {% endfor %}
- 
- </div>
- </div>
+</div>
 {% endfor %}
 
 <script>
@@ -95,10 +85,10 @@
             } else {
                 $("[class='"+category+ "'] div img").eq(i).attr("src","static/photoalt.jpg");
             }
-       }
-}
+        }
+    }
     
-$(".favorite-btn").click(addMoreNews);
+    $(".favorite-btn").click(addMoreNews);
 
 </script>
 

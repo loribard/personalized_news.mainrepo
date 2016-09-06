@@ -7,11 +7,10 @@ from reddit import get_posts_by_interest
 
 
 def get_news(limit=3):
-    """ get the newsfeed that will print out on thenews.html"""
+    """ get the newsfeed that will print out on thenews.html
+        """
 
-
-    
-    user_id = session['user_id']
+    user_id= session['user_id']
     users_w_categories_obj = UserCategory.query.filter_by(user_id=user_id).all()
     category_id_list = []
     for user in users_w_categories_obj:
@@ -23,8 +22,7 @@ def get_news(limit=3):
         category = subreddit_obj.category_name
         subreddit_url = subreddit_obj.subreddit_search
         posts = get_posts_by_interest(subreddit_url,limit)
-        dictionary_to_unpack_in_html[category]=posts
-
+        dictionary_to_unpack_in_html[category] = posts
 
     return dictionary_to_unpack_in_html
 

@@ -1,26 +1,33 @@
 """tests for ratings project"""
 
 from unittest import TestCase
+import doctest
+
 from model import db, connect_to_db, make_test_data, User, Category, UserCategory
 from server import app
-from db_func import get_category
 from main_program import get_declared_interests
 from flask import session
-
+import seed
+import reddit
+import main_program
+from main_program import get_news
 # to test:
 # python testing.py
 # coverage:
-# coverage run --omit=env/* testing.py
+# coverage run --omit=seed.,env/* testing.py
 # for report:
 # coverage report -m
 # coverage html
 
-# def load_tests(loader, tests, ignore):
-#     """Also run our doctests and file-based doctests."""
 
-#     tests.addTests(doctest.DocTestSuite(server))
-#     tests.addTests(doctest.DocFileSuite("tests.txt"))
-#     return tests
+
+def load_tests(loader,tests,ignore):
+    """ to run doctests"""
+
+    tests.addTests(doctest.DocTestSuite(reddit))
+    tests.addTests(doctest.DocTestSuite(main_program))
+    return tests
+    
 
 class FlaskTestsBasic(TestCase):
     """Flask tests."""
@@ -62,33 +69,23 @@ class DatabaseTests(TestCase):
         """get the category names for user_id 1"""
 
         user_category_id = 1
-        category = get_category(user_category_id)
+        category = UserCategory.query.get(1).category_id
         self.assertEqual(Category.query.get(category).category_name, 'Pets')
 
 
     def test_to_get_declared_interests_by_user(self):
-       
       
-        result = get_declared_interests(1)
-        print result,"^^^^^^^^^^^^^^^"
-        
-        # user_category_ids = db.session.query(UserCategory.category_id).filter_by(user_id=user_id).all()
-        # print user_category_ids,"**************************"
-        # for user_category_id in user_category_ids:
-        #     category_id = user_category_ids[0]
-        #     user_category_obj=Category.query.get(category_id)
-        #     category_list.append(str(user_category_obj.category_name))
-        
+
+        result = get_declared_interests(1) 
         self.assertEqual(['Pets'] ,result)
              
-    
-
    
     def test_user_table(self):
         """ get the information on a user"""
 
-        user_id = 1
-        self.assertEqual(User.query.get(user_id).firstname,"lori")   
+        
+        result = User.query.get(1).firstname
+        self.assertEqual(result, "lori")   
 
 
 
@@ -103,12 +100,20 @@ class FlaskDatabaseTests(TestCase):
         make_test_data()
 
 
-
     def tearDown(self):
         """after every test"""
 
         db.session.close()
         db.drop_all()
+
+
+    def test_categories(self):
+
+
+        result = self.client.get("/news/google-news")
+       
+        self.assertIn("Google Headline News",result.data)
+
 
     def test_register(self):
         """test registration"""
@@ -129,18 +134,7 @@ class FlaskDatabaseTests(TestCase):
 
         self.assertEqual(result.status_code, 200)
 
-    # def test_category_database(self):
 
-    #     """in test database:pets = Category(category_name='Pets', subreddit_search=["aww", "cats", "catgifs", "dogs", "pets", "doggifs", "animalsbeingderps"])"""
-
-    #     category = Category.query.get(1)
-    #     categoryname = category.category_name
-       
-    #     category_search_url = category.subreddit_search
-    
-
-    #     result = self.client.get(data={categoryname: "Pets"})
-    #     self.assertEqual(result.data)
 
 
     def test_login(self):
@@ -150,6 +144,14 @@ class FlaskDatabaseTests(TestCase):
                                   data={"email": "lori@bardfamily.org", "password": "lori"},
                                   follow_redirects=True)
         self.assertIn('Logged in', result.data)
+
+    def test_get_user(self):
+
+
+        email = "lori@bardfamily.org"
+        user = User.query.filter_by(email = email).one()
+
+        self.assertEqual(user.firstname,"lori")
 
 
         
@@ -177,6 +179,9 @@ class MyAppIntegrationTestCase(TestCase):
         self.assertIn('<div id="headlines">', result.data)
 
 
+
+
+
 class FlaskTestsLoggedOut(TestCase):
     """Flask tests with user logged in to session."""
 
@@ -192,39 +197,7 @@ class FlaskTestsLoggedOut(TestCase):
         result = self.client.get("/important", follow_redirects=True)
         self.assertNotIn("You are a valued user", result.data)
         self.assertIn("My News", result.data)
-
-
-class FlaskTestsLoggedIn(TestCase):
-    """Flask tests with user logged in to session."""
-
-    def setUp(self):
-        """Stuff to do before every test."""
-
-        app.config['TESTING'] = True
-        app.config['SECRET_KEY'] = 'ABC'
-      
-        self.client = app.test_client()
-
-        with self.client as c:
-            with c.session_transaction() as sess:
-                sess['user_id'] = 1
-
-    # def test_declared_interests(self):
-    #     """test to see if the correct interests comeback"""
-
-
-
-    #     result = get_declared_interests(1)
-    #     print result 
-        
-    #     self.assertIn("Pets", result)
-
-
-    def test_important_page(self):
-        """Test important page."""
-
-        result = self.client.get("/important")
-        self.assertIn("You are a valued user", result.data)  
+ 
 
 
 if __name__ == "__main__":

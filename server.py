@@ -10,6 +10,7 @@ from model import connect_to_db, db, User, Category, UserCategory, categories
 from reddit import r,get_authorize_reddit_link, get_posts_by_interest
 from main_program import get_news, get_declared_interests, personalize_name
 from headlines import get_headlines
+
 app = Flask(__name__)
 app.secret_key = "ABC"
 
@@ -47,16 +48,20 @@ def get_authorized():
 
 @app.route('/news_quote', methods=["POST"])
 def print_news_quote():
-    """ Prints a random quote about the news"""
+    """ Links to ajax request for updating news data"""
+
+
     dict_misc = {}
     category_name = request.form.get("category")
-    print category_name
     category = Category.query.filter_by(category_name=category_name).one()
-    subreddit_url = category.subreddit_search
-    more_news = get_posts_by_interest(subreddit_url,21)
-    dict_misc[category_name] = more_news
+    if category:
+        subreddit_url = category.subreddit_search
+        more_news = get_posts_by_interest(subreddit_url,21)
+        dict_misc[category_name] = more_news
+        return jsonify(dict_misc)
+    else:
+        return "error, category not in database"
     
-    return jsonify(dict_misc)
 
 
 @app.route('/see-news')
@@ -66,7 +71,7 @@ def get_news_page():
 
     if session.get('user_id'):
         dictionary_to_unpack_in_html = get_news()
-        
+        print dictionary_to_unpack_in_html
         return render_template("thenews.html",dictionary_to_unpack_in_html=dictionary_to_unpack_in_html)
     else:
         flash("Please login if you're a member or register to become a member to see your news")

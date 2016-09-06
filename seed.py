@@ -17,6 +17,7 @@ def store_categories(categories_dict):
         new_category = Category(category_name=category_name, subreddit_search=subreddit_search)
         db.session.add(new_category)
     db.session.commit()
+    print "Categories loaded"
 
 def set_val_user_id():
     """Set value for the next user_id after seeding database"""

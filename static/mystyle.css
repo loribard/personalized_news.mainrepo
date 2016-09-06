@@ -1,5 +1,3 @@
-    
-        .navbar-brand { font-family: "Anton"; text-align: left; padding:0px;}
 
         #headlines {
           width:80%;
@@ -12,6 +10,7 @@
           padding-top:50px;
           background-color: #33ccff;
           text-indent:1.5em;
+          
         }
 
       
@@ -35,5 +34,21 @@
         #changing  {
           width:80%;
         }
+
+        a.navbar-brand {
+          float:left;
+          font-family:"Anton";
+          text-align:left;
+          padding:0px;
+          line-height: 25px;
+
+        }
+
+        div.navbar-header {
+          padding-top:15px;
+        }
+
+    
+        
 
       

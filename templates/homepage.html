@@ -2,22 +2,22 @@
 {% block content %}
 
 <div id="saying">
-<h1 id="sayingInfo"></h1>
-   
-</div>   
+    <h1 id="sayingInfo"></h1>
     
+</div>   
+
 
 <script>
-var sayings = ['We relish news of our heroes, forgetting that we are extraordinary to somebody too.', 'In the business world, bad news is usually good news---for somebody else.',"Bad News Goes about in Clogs, Good News in Stocking Feet", "Evening news is where they begin with 'Good Evening' and then proceed to tell you why it isn\'t.", 'News is to the mind what sugar is to the body.', 'Bad news travels fast. Good news takes the scenic route.', 'BREAKING NEWS: You\'re awesome and designed for success; live this day accordingly!', 'The bad news is time flies. The good news is you\'re the pilot.','The Bad News: Nothing Lasts Forever. The Good News: Nothing Lasts Forever'];
+    var sayings = ['We relish news of our heroes, forgetting that we are extraordinary to somebody too.', 'In the business world, bad news is usually good news---for somebody else.',"Bad News Goes about in Clogs, Good News in Stocking Feet", "Evening news is where they begin with 'Good Evening' and then proceed to tell you why it isn\'t.", 'News is to the mind what sugar is to the body.', 'Bad news travels fast. Good news takes the scenic route.', 'BREAKING NEWS: You\'re awesome and designed for success; live this day accordingly!', 'The bad news is time flies. The good news is you\'re the pilot.','The Bad News: Nothing Lasts Forever. The Good News: Nothing Lasts Forever'];
 
-function saying() {
-    console.log("Here")
-    var saying = sayings[Math.floor(Math.random()*sayings.length)];
-    $("#sayingInfo").text(saying);
-    
-}
+    function saying() {
+        console.log("Here")
+        var saying = sayings[Math.floor(Math.random()*sayings.length)];
+        $("#sayingInfo").text(saying);
+        
+    }
 
-$(document).ready(saying);
+    $(document).ready(saying);
 
 
 </script>
@@ -27,7 +27,7 @@ $(document).ready(saying);
 
 
 
-  
+
 
 
 
