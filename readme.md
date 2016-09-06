@@ -1,8 +1,8 @@
+*My News*
+--------------------
+
 **My News**
 
-
-
-MyNews
 
 My News gives users a tool to quickly preview all the news they are
 interested in. Users choose from a list of possible interests and top
@@ -11,7 +11,7 @@ news from five major new sources (BBC, google-news, CNN, Bloomberg and
 CNN). The news articles displays a thumbnail and a description. Users
 can click on the article for the entire article.
 
-How it works
+**How it works**
 
 User inputs their name and what their interests are. Through OAUTH, a
 request is made to the reddit API (PRAW) to get information on the
@@ -22,27 +22,27 @@ is
 Even an unregistered user can take a look at the headline news by
 choosing a news source in the “Headline News” dropdown.
 
-Screenshots
+**Screenshots**
 
-Homepage
+***Homepage***
 
-![](static/Screen Shot 2016-09-06 at 8:15.44 AM.jpg){width="300px" height="187px"}
+<img src="static/home-page.png">
 
-Headline News using newsapi.org
+***News for specific user based on interest. Click on category for next
+three items***
 
-![](media/image3.jpeg){width="6.0in" height="3.75in"}
+<img src="static/my-news.png">
 
-News for specific user based on interest. Click on category for next
-three items.
+***Headline News using newsapi.org***
 
-![](media/image4.jpeg){width="6.0in" height="3.75in"}
+<img src="static/headline-news.png">
 
-Testing Coverage
+**Testing Coverage**
 
-As of this time, testing is at 78% coverage. I hope to increase the
+As of this 9/6/2016, testing is at 78% coverage. I hope to increase the
 testing coverage in the near future.
 
-Technology Stack
+**Technology Stack**
 
 **Application:** Python, Flask, Jinja, SQLAlchemy, PostgreSQL\
 **APIs:** Reddit, Newsapi\
@@ -51,5 +51,4 @@ Technology Stack
 About the Developer
 
 Lori Russell Bard
-
 [Linkedin](https://www.linkedin.com/in/lori-bard)
