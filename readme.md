@@ -45,9 +45,9 @@ Because the project connects to the reddit api, I need to make a mock database t
 
 **Technology Stack**
 
-**Application:** Python, Flask, Jinja, SQLAlchemy, PostgreSQL
-**APIs:** Reddit, Newsapi
-**Front-End**: HTML/CSS, Bootstrap, JQuery, JavaScript, AJAX
+**Application:** Python, Flask, Jinja, SQLAlchemy, PostgreSQL                  
+**APIs:** Reddit, Newsapi                                   
+**Front-End**: HTML/CSS, Bootstrap, JQuery, JavaScript, AJAX                      
 
 About the Developer
 
